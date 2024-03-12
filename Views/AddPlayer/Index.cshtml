@@ -1,0 +1,100 @@
+﻿@model IEnumerable<CricketWebApplicationMVC.Models.AddPlayerModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    th {
+        font-weight:400;
+    }
+   
+</style>
+
+<h2>Registered Players</h2>
+
+<p>
+    <a asp-action="AddPlayer">Add Player</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlayerID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlayerName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Born)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Age)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BattingStyle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BowlingStyle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlayingRole)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlayerImg)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayerID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Born)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BattingStyle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BowlingStyle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayingRole)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Team)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlayerImg)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { PlayerID = item.PlayerID })
+                        @Html.ActionLink("Details", "Details", new { PlayerID = item.PlayerID })
+                        @Html.ActionLink("Delete", "Delete", new { PlayerID = item.PlayerID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

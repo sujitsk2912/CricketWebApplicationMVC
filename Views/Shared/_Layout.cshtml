@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CricketWebApplicationMVC.styles.css" asp-append-version="true" />
+
+    
+        <!-- Add the Bootstrap CSS link -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Add the Bootstrap JavaScript and Popper.js files -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'poppins', sans-serif;
+        }
+
+        .navbar{
+            background-color: #03A8F3;
+        }
+
+        /* .container-fluid {
+            background-color: #03A8F3;
+        }
+
+        .navbar-brand{
+            border:2px solid red;
+            
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-collapse{
+            border:2px solid blue;
+        }
+        */
+
+        .img1 {
+            margin-top: 45px;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1;
+        }
+    </style>
+
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbarExample">
+
+    <!-- Navigation -->
+    <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
+        <div class="container">
+
+            <!-- Image Logo -->
+            <a class="navbar-brand logo-image" asp-controller="Home" asp-action="Home">
+                <img src="images/logo.svg" alt="alternative" />
+            </a>
+
+            <!-- Button to toggle the navigation on small screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation items -->
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" asp-controller="AddPlayer" asp-action="AddPlayer">Add Player</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="AddTeam" asp-action="AddTeam">Add Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="ManageTeam" asp-action="ManageTeam">Manage Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="CreateMatch" asp-action="CreateMatch">Create Match</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="ChangeStatus" asp-action="ChangeStatus">Change Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="AddRecord" asp-action="AddRecord">Add Record</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-controller="FinishMatch" asp-action="FinishMatch">Finish Match</a>
+                    </li>
+                   @*  <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropdown01" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Drop</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="article.html">Article Details</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="terms.html">Terms Conditions</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="privacy.html">Privacy Policy</a>
+                        </div>
+                    </li> *@
+                </ul>
+                <span class="btn-body">
+                    <a class="btn" href="#">Login</a>
+                </span>
+            </div>
+        </div>
+    </nav>
+    <!-- end of navbar -->
+    <!-- end of navigation -->
+
+
+    <img class="img1" src="~/lib/view-soccer-gold-cup-field.jpg" alt="Alternate Text" />
+    <br /><br />
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <br /><br>
+    <footer class="border-top footer text-muted">
+        <div class="container" style="font-size:14px">
+            &copy; 2024 - Cricket Management System | By Sujit
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

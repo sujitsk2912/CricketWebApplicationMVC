@@ -1,0 +1,251 @@
+﻿@model CricketWebApplicationMVC.Models.AddRecordModel
+
+@{
+    ViewData["Title"] = "AddRecord";
+}
+
+<style>
+
+    /* .control-label {
+                font-weight:500;
+                padding:3px;
+            } */
+    .row {
+        place-content: center;
+        padding: 5px;
+    }
+    /*   .col-md-4{
+                padding:10px;
+            } */
+    form {
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .btn {
+        width: 90%;
+    }
+
+    .TeamLogo {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        height: 150px;
+        border-radius: 5px;
+    }
+
+    .BattingTeam{
+        padding-top:7px;
+        border-radius:5px;
+        height:40px;
+        color:#fff;
+        background-color:red;
+        display:flex;
+        justify-content:center;
+        margin-top:20px;
+        text-align: center
+    }
+
+      @@media screen and (max-width: 768px) {
+        .col-md-12 {
+            display:flex;
+            justify-content:space-between;
+            flex-direction:column;
+        }
+    }
+
+</style>
+
+
+<body>
+    <center>
+        <h2>Add Record</h2>
+    </center>
+    <hr />
+
+    <form asp-action="AddRecord">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="MatchID" class="control-label">Enter Match ID</label>
+                    <input asp-for="MatchID" class="form-control" />
+                    <span asp-validation-for="MatchID" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="MatchType" class="control-label">Match Type</label>
+                    <input asp-for="MatchType" readonly class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="TeamName" class="control-label">Team A</label>
+                    <input asp-for="TeamName" readonly class="form-control" />
+                    <br />
+                    <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
+                        <img class="TeamLogo" src="~/lib/view-soccer-gold-cup-field.jpg" />
+                    </div>
+                    <div class="BattingTeam">
+                        <label class="control-label">Batting Team</label>
+                    </div>
+                </div>
+            </div><div class="col-md-2">
+                <br />
+                <div class="form-group" style="border:1px solid #CDD3D9; border-radius:5px; align-items:center; display:flex;justify-content:center">
+                    <h5 style="place-items:center;padding-top:10px">V/S</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="TeamName" class="control-label">Team B</label>
+                    <input asp-for="TeamName" readonly class="form-control" />
+                    <br />
+                    <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
+                        <img class="TeamLogo" src="~/lib/view-soccer-gold-cup-field.jpg" />
+                    </div>
+                    <div class="BattingTeam">
+                        <label  class="control-label">Batting Team</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br />
+        <div class="row" style="background-color:aqua; height:40px;text-align:center">
+            <div style="display:flex; justify-content:space-between;align-items:center;padding:15px 90px 0 90px">
+                <p style="font-weight:600">Batsmen</p>
+                <p style="font-weight:600">Bowler</p>
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-md-12" style="display:flex; justify-content:space-between">
+                <div class="form-group">
+                    <label class="control-label">Batsmen A</label>
+                    <select id="BatsmenA" class="form-control">
+                        <option>Select</option>
+                        <option value="Right-Handed Batsman">Right-Handed Batsman</option>
+                        <option value="Left-Handed Batsman">Left-Handed Batsman</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Batsmen B</label>
+                    <select id="BatsmenB" class="form-control">
+                        <option>Select</option>
+                        <option value="Right-Handed Batsman">Right-Handed Batsman</option>
+                        <option value="Left-Handed Batsman">Left-Handed Batsman</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Bowler</label>
+                    <select id="Bowler" class="form-control">
+                        <option>Select</option>
+                        <option value="Right-Handed Batsman">Right-Handed Batsman</option>
+                        <option value="Left-Handed Batsman">Left-Handed Batsman</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row" style="background-color:aqua; height:40px;text-align:center">
+            <div style="display:flex; justify-content:space-between;align-items:center;padding:15px 90px 0 90px">
+                        <p style="font-weight:600">Run Details</p>
+                        <p style="font-weight:600">Score Details</p>
+                </div>
+        </div>
+        <br />
+        <div class="row" style="display:flex; justify-content:space-between">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Opener Batsmen</label>
+                    <select id="OpenerBatsmen" class="form-control">
+                        <option>Select</option>
+                        <option value="Right-Handed Batsman">Right-Handed Batsman</option>
+                        <option value="Left-Handed Batsman">Left-Handed Batsman</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input placeholder="Bowler Overs" asp-for="Overs" class="form-control" />
+                    <span asp-validation-for="Overs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input placeholder ="Balls" asp-for="Balls" class="form-control" />
+                    <span asp-validation-for="Balls" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input placeholder="Runs" asp-for="Runs" class="form-control" />
+                    <span asp-validation-for="Runs" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="CurrentScore" class="control-label">Current Score</label>
+                    <input value="0/0 (0.0 ovr)" readonly asp-for="CurrentScore" class="form-control" style="text-align:center;font-weight:600" />
+                </div>
+            
+
+                <div class="row" style="display:flex; justify-content:space-between">
+                    <div class="col-md-6">
+                            <input placeholder="Runs" asp-for="Runs" class="form-control" style="text-align:center"/>
+                            <span asp-validation-for="Runs" class="text-danger"></span>
+                    </div>
+                        <br /><br>
+                    <div class="col-md-6">
+                            <input placeholder="Wickets" asp-for="Wickets" class="form-control" style="text-align:center" />
+                            <span asp-validation-for="Wickets" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group">
+                        <input placeholder="Total Overs" asp-for="Overs" class="form-control" />
+                        <span asp-validation-for="Overs" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+     
+            <div class="col-md-6">
+                <div class="form-group">
+                    <textarea placeholder="Description about the balls..." asp-for="Description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group" style="display:flex; justify-content:center">
+                    <input type="button" value="Update" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+</body>
+
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(alertMessage))
+{
+    <script>
+        alert('@alertMessage');
+    </script>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

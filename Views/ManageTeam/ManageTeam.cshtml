@@ -1,0 +1,230 @@
+﻿@model CricketWebApplicationMVC.Models.ManageTeamModel
+
+@{
+    ViewData["Title"] = "ManageTeam";
+}
+
+<style>
+    .row {
+        place-content: center;
+        padding: 5px;
+    }
+
+    form {
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .btn {
+        width: 90%;
+    }
+
+    .player-box {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+    }
+
+    .added-player {
+        margin-right: 5px;
+    }
+
+    .close-icon {
+        cursor: pointer;
+        color: #888;
+        font-size: 18px;
+        margin-left: 5px;
+    }
+
+    .suggestions-box {
+        background-color: black;
+        border-radius: 5px;
+        padding: 10px;
+        max-height: 150px;
+        width: 400px;
+        overflow-y: auto;
+    }
+
+    .suggestion-item {
+        color: white;
+        cursor: pointer;
+        padding: 5px;
+        border-bottom: 1px solid #333;
+    }
+
+        .suggestion-item:hover {
+            background-color: #333;
+        }
+</style>
+
+<div id="playerBoxTemplate" class="d-none">
+    <div class="player-box">
+        <div class="added-player"></div>
+        <span class="close-icon" title="Remove">&times;</span>
+    </div>
+</div>
+
+<center>
+    <h2>Manage Team</h2>
+</center>
+
+<hr />
+
+<form asp-action="ManageTeam">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="TeamName" class="control-label">Team Name</label>
+                <input asp-for="TeamName" class="form-control" />
+                <span asp-validation-for="TeamName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="TeamLogo" class="control-label">Team Logo</label>
+                <input type="file" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="TeamLogo" asp-for="TeamLogo" class="form-control" />
+                <span asp-validation-for="TeamLogo" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="TeamPlayerName" class="control-label">Player Name</label>
+                    <div class="input-group">
+                        <input id="playerNameInput" asp-for="TeamPlayerName" class="form-control" style="width: 70%; border-radius: 4px;" />
+                        <input type="button" id="addButton" value="Add" class="btn btn-primary" style="width: 25%; margin-left: 10px; border-radius: 4px;" />
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="TeamPlayerName" class="text-danger"></span>
+            <div id="suggestionsContainer"></div>
+
+            <!-- Container to display added players -->
+            <div id="addedPlayersContainer"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group" style="display:flex; justify-content:center">
+                <input type="submit" value="Add Team" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(alertMessage))
+{
+    <script>
+        alert('@alertMessage');
+    </script>
+}
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const playerNameInput = $('#playerNameInput');
+            const suggestionsContainer = $('#suggestionsContainer');
+            const addedPlayersContainer = $('#addedPlayersContainer');
+
+            playerNameInput.on('input', function () {
+                const query = playerNameInput.val();
+
+                // Call the backend API with the query and handle the response
+                $.get(`/AddTeam/GetPlayerSuggestions?query=${query}`, function (data) {
+                    displaySuggestions(data);
+                });
+            });
+
+            $('#addButton').on('click', function () {
+                const playerName = playerNameInput.val().trim();
+
+                // Check if the input is not empty
+                if (playerName !== '') {
+                    // Check if the player is not already added
+                    if (!isPlayerAlreadyAdded(playerName)) {
+                        // Check if 11 players are already added
+                        if (addedPlayersContainer.children().length < 11) {
+                            // Add the player to the list
+                            addPlayer(playerName);
+
+                            // Clear the input field and suggestions
+                            playerNameInput.val('');
+                            suggestionsContainer.empty();
+                        } else {
+                            alert('You can add only 11 players.');
+                        }
+                    } else {
+                        alert('Player already added.');
+                    }
+                }
+            });
+
+            function isPlayerAlreadyAdded(playerName) {
+                // Check if the player is already added
+                return addedPlayersContainer.find('.added-player').filter(function () {
+                    return $(this).text() === playerName;
+                }).length > 0;
+            }
+
+            function addPlayer(playerName) {
+                // Clone the player box template
+                const playerBoxTemplate = $('#playerBoxTemplate').clone().removeAttr('id').removeClass('d-none');
+
+                // Set the player name
+                playerBoxTemplate.find('.added-player').text(playerName);
+
+                // Attach click event to close icon to remove the player
+                playerBoxTemplate.find('.close-icon').on('click', function () {
+                    playerBoxTemplate.remove();
+                });
+
+                // Append the cloned player box to the addedPlayersContainer
+                addedPlayersContainer.append(playerBoxTemplate);
+            }
+
+            function displaySuggestions(suggestions) {
+                // Clear previous suggestions
+                suggestionsContainer.empty();
+
+                // Display new suggestions in a black box with good design
+                const suggestionsBox = $('<div class="suggestions-box"></div>');
+                suggestions.forEach(function (suggestion) {
+                    const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
+                    suggestionsBox.append(suggestionItem);
+
+                    // Attach click event to suggestion items
+                    suggestionItem.on('click', function () {
+                        playerNameInput.val(suggestion);
+                        suggestionsContainer.empty();
+                    });
+                });
+
+                suggestionsContainer.append(suggestionsBox);
+            }
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
