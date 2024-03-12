@@ -74,7 +74,7 @@
 
 <hr />
 
-<form asp-action="AddTeam">
+<form asp-action="AddTeam" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
@@ -88,11 +88,17 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="TeamLogo" class="control-label">Team Logo</label>
-                <input type="file" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="TeamLogo" asp-for="TeamLogo" class="form-control" />
+                <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="TeamLogo" asp-for="TeamLogo" class="form-control" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" />
                 <span asp-validation-for="TeamLogo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <img id="blah" alt="" height="100px" />
             </div>
         </div>
     </div>

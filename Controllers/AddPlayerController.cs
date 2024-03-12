@@ -29,55 +29,96 @@ namespace CricketWebApplicationMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddPlayer(AddPlayerModel PList)
+        public async Task<IActionResult> AddPlayer(AddPlayerModel PList, IFormFile UploadFile)
         {
-            if (ModelState.IsValid)
+            try
             {
-                PlayerDBHandler dBHandler = new PlayerDBHandler();
-
-                // Check if a file is uploaded
-                var file = Request.Form.Files["PlayerImg"];
-                if (file != null && file.Length > 0)
+                if (UploadFile != null && UploadFile.Length > 0)
                 {
-                    var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PlayerImg");
-                    if (!Directory.Exists(uploadsFolder))
+                    string filename = Path.GetFileName(UploadFile.FileName);
+                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "PlayerImg");
+
+                    if (!Directory.Exists(uploadFolderPath))
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+                        Directory.CreateDirectory(uploadFolderPath);
                     }
 
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
+                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
                     {
-                        file.CopyTo(stream);
+                        await UploadFile.CopyToAsync(stream);
                     }
 
-                    PList.PlayerImg = filePath;
-                }
+                    PList.PlayerImg = filename;
 
-                if (dBHandler.InsertRecord(PList))
-                {
-                    TempData["AlertMessage"] = "Player Added Successfully";
-                    ModelState.Clear();
-                    return RedirectToAction("AddPlayer");
+                    PlayerDBHandler dBHandler = new PlayerDBHandler();
+                    if (dBHandler.InsertRecord(PList))
+                    {
+                        TempData["AlertMessage"] = "Player Added Successfully";
+                        ModelState.Clear();
+                        return RedirectToAction("AddPlayer");
+                    }
+                    else
+                    {
+                        TempData["AlertMessage"] = "Player Already Added";
+                        ModelState.Clear();
+                    }
                 }
+                else
+                {
+                    TempData["AlertMessage"] = "Please select a file.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["AlertMessage"] = "Error: " + ex.Message;
             }
 
             return View(PList);
         }
 
+        [HttpGet]
         public IActionResult Edit(int PlayerId)
         {
             PlayerDBHandler dbHandler = new PlayerDBHandler();
-            return View(dbHandler.GetRecords().Find(get => get.PlayerID == PlayerId));
+            var player = dbHandler.GetRecords().Find(get => get.PlayerID == PlayerId);
+            return View(player);
         }
 
         [HttpPost]
-        public IActionResult Edit(int PlayerId, AddPlayerModel iList)
+        public async Task<IActionResult> Edit(int PlayerId, AddPlayerModel iList, IFormFile UploadFile)
         {
-            PlayerDBHandler dBHandler = new PlayerDBHandler();
-            dBHandler.UpdateRecord(iList);
-            return RedirectToAction("Index");
+            try
+            {
+                if (UploadFile != null && UploadFile.Length > 0)
+                {
+                    string filename = Path.GetFileName(UploadFile.FileName);
+                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "PlayerImg");
+
+                    if (!Directory.Exists(uploadFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadFolderPath);
+                    }
+
+                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
+                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
+                    {
+                        await UploadFile.CopyToAsync(stream);
+                    }
+
+                    iList.PlayerImg = filename;
+                }
+
+                PlayerDBHandler dBHandler = new PlayerDBHandler();
+                dBHandler.UpdateRecord(iList);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Error: " + ex.Message;
+            }
+
+            return View(iList);
         }
 
         public IActionResult Details(int PlayerId)

@@ -32,51 +32,56 @@
 </center>
 
 <hr />
-<form asp-action="Edit">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label asp-for="PlayerID" class="control-label">Player ID</label>
-                <input asp-for="PlayerID" class="form-control" readonly />
-                <span asp-validation-for="PlayerID" class="text-danger"></span>
-            </div>
+        <div class="col-md-4" style="display:flex; justify-content:center;padding:20px">
+            <img class="PlayerImg" style="height:250px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
         </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label asp-for="PlayerName" class="control-label">Player Name</label>
-                <input asp-for="PlayerName" class="form-control" />
-                <span asp-validation-for="PlayerName" class="text-danger"></span>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PlayerID" class="control-label">Player ID</label>
+                        <input asp-for="PlayerID" class="form-control" readonly />
+                        <span asp-validation-for="PlayerID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PlayerName" class="control-label">Player Name</label>
+                        <input asp-for="PlayerName" class="form-control" />
+                        <span asp-validation-for="PlayerName" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="Born" asp-for="Born" class="control-label">Born</label>
                         <input id="Born" type="date" asp-for="Born" class="form-control" />
                         <span asp-validation-for="Born" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
-                <label asp-for="City" class="control-label">City</label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+                        <label asp-for="City" class="control-label">City</label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="Age" class="control-label">Age</label>
                         <input asp-for="Age" class="form-control" />
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="BattingStyle" class="control-label">Batting Style</label>
                         <select id="BattingStyle" asp-for="BattingStyle" class="form-control">
@@ -98,7 +103,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="BowlingStyle" class="control-label">Bowling Style</label>
                         <select id="BowlingStyle" asp-for="BowlingStyle" class="form-control">
@@ -118,7 +123,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="PlayingRole" class="control-label">Playing Role</label>
                         <select id="PlayingRole" asp-for="PlayingRole" class="form-control">
@@ -140,45 +145,45 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="Team" class="control-label">Team</label>
                         <input asp-for="Team" class="form-control" />
                         <span asp-validation-for="Team" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="PlayerImg" class="control-label">Player Image</label>
-                <input type="file" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
+                        <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
                         <span asp-validation-for="PlayerImg" class="text-danger"></span>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="form-group">
-                <a asp-action="Index">Back to List</a>
+                        <a asp-action="Index">Back to List</a>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-group" style="display:flex; justify-content:center">
                         <input type="submit" value="Save" onclick="saveEdit()" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
-
-        </form>
+        </div>
     </div>
-</div>
+
+</form>
 
 <script>
    function saveEdit(){
-       alert("Record Edted Successfully");
+       alert("Record Edited Successfully");
    }
 </script>
 

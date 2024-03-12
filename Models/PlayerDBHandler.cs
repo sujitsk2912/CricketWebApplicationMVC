@@ -16,19 +16,36 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-            string Query = "Insert into PlayerDetails values ('" + PList.PlayerName + "','" + PList.Born + "','" + PList.City + "','" + PList.Age + "','" + PList.BattingStyle + "','" + PList.BowlingStyle + "','" + PList.PlayingRole + "','" + PList.Team + "','" + PList.PlayerImg + "')";
-            SqlCommand cmd = new SqlCommand(Query, con);
-            int res = cmd.ExecuteNonQuery();
+
+            string checkQuery = "SELECT COUNT(*) FROM PlayerDetails WHERE PlayerName = @PlayerName";
+            SqlCommand checkCmd = new SqlCommand(checkQuery, con);
+            checkCmd.Parameters.AddWithValue("@PlayerName", PList.PlayerName);
+            int existingCount = (int)checkCmd.ExecuteScalar();
+
+            if (existingCount > 0)
+            {
+                con.Close();
+                return false; // Player already exists, return false
+            }
+
+            string insertQuery = "INSERT INTO PlayerDetails VALUES (@PlayerName, @Born, @City, @Age, @BattingStyle, @BowlingStyle, @PlayingRole, @Team, @PlayerImg)";
+            SqlCommand insertCmd = new SqlCommand(insertQuery, con);
+            insertCmd.Parameters.AddWithValue("@PlayerName", PList.PlayerName);
+            insertCmd.Parameters.AddWithValue("@Born", PList.Born);
+            insertCmd.Parameters.AddWithValue("@City", PList.City);
+            insertCmd.Parameters.AddWithValue("@Age", PList.Age);
+            insertCmd.Parameters.AddWithValue("@BattingStyle", PList.BattingStyle);
+            insertCmd.Parameters.AddWithValue("@BowlingStyle", PList.BowlingStyle);
+            insertCmd.Parameters.AddWithValue("@PlayingRole", PList.PlayingRole);
+            insertCmd.Parameters.AddWithValue("@Team", PList.Team);
+            insertCmd.Parameters.AddWithValue("@PlayerImg", PList.PlayerImg);
+
+            int res = insertCmd.ExecuteNonQuery();
             con.Close();
-            if (res > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return res > 0;
         }
+
 
         public List<AddPlayerModel> GetRecords()
         {
@@ -66,8 +83,33 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-            string Query = "Update PlayerDetails set PlayerName = '" + iList.PlayerName + "', Born = '" + iList.Born + "', City = '" + iList.City + "', Age = '" + iList.Age + "', BattingStyle = '" + iList.BattingStyle + "', BowlingStyle = '" + iList.BowlingStyle + "', PlayingRole = '" + iList.PlayingRole + "', Team = '" + iList.Team + "',  PlayerImg = '" + iList.PlayerImg + "' where PlayerID = '" + iList.PlayerID + "'";
+
+            string Query = "Update PlayerDetails set PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole, Team = @Team";
+
+            // Check if a new image file is selected
+            if (iList.PlayerImg != null)
+            {
+                Query += ", PlayerImg = @PlayerImg";
+            }
+
+            Query += " where PlayerID = @PlayerID";
+
             SqlCommand cmd = new SqlCommand(Query, con);
+            cmd.Parameters.AddWithValue("@PlayerName", iList.PlayerName);
+            cmd.Parameters.AddWithValue("@Born", iList.Born);
+            cmd.Parameters.AddWithValue("@City", iList.City);
+            cmd.Parameters.AddWithValue("@Age", iList.Age);
+            cmd.Parameters.AddWithValue("@BattingStyle", iList.BattingStyle);
+            cmd.Parameters.AddWithValue("@BowlingStyle", iList.BowlingStyle);
+            cmd.Parameters.AddWithValue("@PlayingRole", iList.PlayingRole);
+            cmd.Parameters.AddWithValue("@Team", iList.Team);
+            cmd.Parameters.AddWithValue("@PlayerID", iList.PlayerID);
+
+            if (iList.PlayerImg != null)
+            {
+                cmd.Parameters.AddWithValue("@PlayerImg", iList.PlayerImg);
+            }
+
             int res = cmd.ExecuteNonQuery();
             con.Close();
 
@@ -80,6 +122,7 @@ namespace CricketWebApplicationMVC.Models
                 return false;
             }
         }
+
 
         public bool DeleteRecord(int PlayerId)
         {

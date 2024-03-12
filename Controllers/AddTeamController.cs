@@ -1,10 +1,22 @@
-﻿using CricketWebApplicationMVC.Models;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using CricketWebApplicationMVC.Models;
+
 
 namespace CricketWebApplicationMVC.Controllers
 {
     public class AddTeamController : Controller
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public AddTeamController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -16,31 +28,53 @@ namespace CricketWebApplicationMVC.Controllers
             return View();
         }
 
-
         [HttpPost]
-        public IActionResult AddTeam(AddTeamModel team)
+        public async Task<IActionResult> AddTeam(AddTeamModel team, IFormFile UploadFile)
         {
-            if (ModelState.IsValid)
+            try
             {
-                TeamDBHandler dbHandler = new TeamDBHandler();
-
-                if (dbHandler.AddTeam(team))
+                if (UploadFile != null && UploadFile.Length > 0)
                 {
-                    TempData["AlertMessage"] = "Team Added Successfully";
+                    string filename = Path.GetFileName(UploadFile.FileName);
+                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
 
-                    // Show alert when 11 players are added
-                    if (team.TeamPlayerName.Length == 11)
+                    if (!Directory.Exists(uploadFolderPath))
                     {
-                        TempData["AlertMessage"] = "Team Added Successfully. 11 players added.";
+                        Directory.CreateDirectory(uploadFolderPath);
                     }
 
-                    ModelState.Clear();
-                    return RedirectToAction("AddTeam");
+                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
+                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
+                    {
+                        await UploadFile.CopyToAsync(stream);
+                    }
+
+                    team.TeamLogo = filename;
+
+                    TeamDBHandler dbHandler = new TeamDBHandler();
+
+                    if (dbHandler.AddTeam(team))
+                    {
+                        TempData["AlertMessage"] = "Team Added Successfully";
+
+                        // Show alert when 11 players are added
+                        if (team.TeamPlayerName.Length == 11)
+                        {
+                            TempData["AlertMessage"] = "Team Added Successfully. 11 players added.";
+                        }
+
+                        ModelState.Clear();
+                        return RedirectToAction("AddTeam");
+                    }
+                    else
+                    {
+                        TempData["AlertMessage"] = "Failed to add team. Please try again.";
+                    }
                 }
-                else
-                {
-                    TempData["AlertMessage"] = "Failed to add team. Please try again.";
-                }
+            }
+            catch (Exception ex)
+            {
+                TempData["AlertMessage"] = "Error: " + ex.Message;
             }
 
             return View();
