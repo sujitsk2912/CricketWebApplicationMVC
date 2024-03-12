@@ -16,33 +16,6 @@ namespace CricketWebApplicationMVC.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Upload()
-        {
-            var file = Request.Form.Files["PlayerImg"];
-            if (file != null && file.Length > 0)
-            {
-                var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PlayerImg");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
-
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                // Optionally, you can save the file path to a database or return it to the view.
-                // For simplicity, I'll just return a success message.
-                return Content("File uploaded successfully!");
-            }
-
-            return Content("No file selected or file is empty!");
-        }
-
         public IActionResult Index()
         {
             PlayerDBHandler dBHandler = new PlayerDBHandler();
@@ -62,6 +35,26 @@ namespace CricketWebApplicationMVC.Controllers
             {
                 PlayerDBHandler dBHandler = new PlayerDBHandler();
 
+                // Check if a file is uploaded
+                var file = Request.Form.Files["PlayerImg"];
+                if (file != null && file.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PlayerImg");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    PList.PlayerImg = filePath;
+                }
+
                 if (dBHandler.InsertRecord(PList))
                 {
                     TempData["AlertMessage"] = "Player Added Successfully";
@@ -70,7 +63,7 @@ namespace CricketWebApplicationMVC.Controllers
                 }
             }
 
-            return View();
+            return View(PList);
         }
 
         public IActionResult Edit(int PlayerId)

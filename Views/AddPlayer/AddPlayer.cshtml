@@ -32,7 +32,7 @@
 </center>
 <hr />
 
-    <form asp-action="AddPlayer">
+    <form asp-action="AddPlayer" method="post" enctype="multipart/form-data>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="row">
@@ -140,7 +140,7 @@
             </div>  
         </div>
 
-        <div class="row" method="post" enctype="multipart/form-data">
+        <div class="row"> 
             <div class="col-md-8">
                     <div class="form-group">
                         <label asp-for="PlayerImg" class="control-label">Player Image</label>
