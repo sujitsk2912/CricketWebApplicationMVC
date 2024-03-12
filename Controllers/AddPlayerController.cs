@@ -1,11 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using CricketWebApplicationMVC.Models;
-using Microsoft.Extensions.FileProviders;
 
 namespace CricketWebApplicationMVC.Controllers
 {
     public class AddPlayerController : Controller
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public AddPlayerController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload()
+        {
+            var file = Request.Form.Files["PlayerImg"];
+            if (file != null && file.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PlayerImg");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Optionally, you can save the file path to a database or return it to the view.
+                // For simplicity, I'll just return a success message.
+                return Content("File uploaded successfully!");
+            }
+
+            return Content("No file selected or file is empty!");
+        }
+
         public IActionResult Index()
         {
             PlayerDBHandler dBHandler = new PlayerDBHandler();
@@ -19,35 +56,8 @@ namespace CricketWebApplicationMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddPlayer(AddPlayerModel PList, IFormFile ImageFile)
+        public IActionResult AddPlayer(AddPlayerModel PList)
         {
-            if (ImageFile != null)
-            {
-                if (ImageFile.Length > 0)
-                {
-                    //Getting FileName
-                    var fileName = Path.GetFileName(ImageFile.FileName);
-
-                    //Assigning Unique Filename (Guid)
-                    var myUniqueFileName = Convert.ToString(Guid.NewGuid());
-
-                    //Getting file Extension
-                    var fileExtension = Path.GetExtension(fileName);
-
-                    // concatenating  FileName + FileExtension
-                    var newFileName = String.Concat(myUniqueFileName, fileExtension);
-
-                    // Combines two strings into a path.
-                    var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "PlayerImg")).Root + $@"\{newFileName}";
-
-                    using (FileStream fs = System.IO.File.Create(filepath))
-                    {
-                        ImageFile.CopyTo(fs);
-                        fs.Flush();
-                    }
-                }
-            }
-
             if (ModelState.IsValid)
             {
                 PlayerDBHandler dBHandler = new PlayerDBHandler();

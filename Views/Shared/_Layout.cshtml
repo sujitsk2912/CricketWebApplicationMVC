@@ -15,12 +15,13 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
     <style>
-
+        
         * {
             padding: 0;
             margin: 0;
@@ -32,25 +33,6 @@
             background-color: #03A8F3;
         }
 
-        /* .container-fluid {
-            background-color: #03A8F3;
-        }
-
-        .navbar-brand{
-            border:2px solid red;
-            
-        }
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar-collapse{
-            border:2px solid blue;
-        }
-        */
-
         .img1 {
             margin-top: 45px;
             width: 100%;
@@ -58,18 +40,51 @@
             background-position: center;
             z-index: -1;
         }
+
+       .card{
+	        width: 500px;
+	        border: none;
+	        border-radius: 20px;
+        }
+        .form-control{
+	        border-radius: 7px;
+	        border: 1.5px solid #E3E6ED;
+        }
+        input.form-control:focus{
+	        box-shadow: none;
+	        border: 1.5px solid #E3E6ED;
+	        background-color: #F7F8FD;
+	        letter-spacing: 1px;
+        }
+        .btn-primary{
+	        background-color: #5878FF!important;
+	        border-radius: 7px;
+        }
+        .btn-primary:focus{
+	        box-shadow: none;
+        }
+
+        @@media screen and (max-width: 450px){
+	        .card{
+		        display: flex;
+		        justify-content: center;
+		        text-align: center;
+	        }
+        }
+	
     </style>
 
 </head>
+
 <body data-bs-spy="scroll" data-bs-target="#navbarExample">
 
     <!-- Navigation -->
     <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
-        <div class="container">
+        <div class="container-fluid">
 
             <!-- Image Logo -->
             <a class="navbar-brand logo-image" asp-controller="Home" asp-action="Home">
-                <img src="images/logo.svg" alt="alternative" />
+                <img src="images/logo.svg" alt="CricketScore" />
             </a>
 
             <!-- Button to toggle the navigation on small screens -->
@@ -101,26 +116,23 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" asp-controller="FinishMatch" asp-action="FinishMatch">Finish Match</a>
                     </li>
-                   @*  <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropdown01" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Drop</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="article.html">Article Details</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="terms.html">Terms Conditions</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="privacy.html">Privacy Policy</a>
+                    <li class="nav-item">
+                        <div class="container d-flex justify-content-center">
+                             <div class="input-group">
+                                <input placeholder="Search for Player, Series, Team..." type="text" class="form-control" />
+                                <div class="input-group-append"><button class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button></div>
+                             </div>
                         </div>
-                    </li> *@
+                    </li>
                 </ul>
                 <span class="btn-body">
-                    <a class="btn" href="#">Login</a>
+                    <a class="btn" href="#">Log Out</a>
                 </span>
             </div>
         </div>
     </nav>
     <!-- end of navbar -->
     <!-- end of navigation -->
-
 
     <img class="img1" src="~/lib/view-soccer-gold-cup-field.jpg" alt="Alternate Text" />
     <br /><br />

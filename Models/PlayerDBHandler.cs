@@ -16,7 +16,7 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-            string Query = "Insert into PlayerDetails values ('" + PList.PlayerName + "','" + PList.Born + "','" + PList.Country + "','" + PList.Age + "','" + PList.BattingStyle + "','" + PList.BowlingStyle + "','" + PList.PlayingRole + "','" + PList.Team + "','" + PList.PlayerImg + "')";
+            string Query = "Insert into PlayerDetails values ('" + PList.PlayerName + "','" + PList.Born + "','" + PList.City + "','" + PList.Age + "','" + PList.BattingStyle + "','" + PList.BowlingStyle + "','" + PList.PlayingRole + "','" + PList.Team + "','" + PList.PlayerImg + "')";
             SqlCommand cmd = new SqlCommand(Query, con);
             int res = cmd.ExecuteNonQuery();
             con.Close();
@@ -47,7 +47,7 @@ namespace CricketWebApplicationMVC.Models
                     PlayerID = Convert.ToInt32(dr["PlayerID"]),
                     PlayerName = dr["PlayerName"].ToString(),
                     Born = dr["Born"].ToString(),
-                    Country = dr["Country"].ToString(),
+                    City = dr["City"].ToString(),
                     Age = Convert.ToInt32(dr["Age"]),
                     BattingStyle = dr["BattingStyle"].ToString(),
                     BowlingStyle = dr["BowlingStyle"].ToString(),
@@ -66,7 +66,7 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-            string Query = "Update PlayerDetails set PlayerName = '" + iList.PlayerName + "', Born = '" + iList.Born + "', Country = '" + iList.Country + "', Age = '" + iList.Age + "', BattingStyle = '" + iList.BattingStyle + "', BowlingStyle = '" + iList.BowlingStyle + "', PlayingRole = '" + iList.PlayingRole + "', Team = '" + iList.Team + "',  PlayerImg = '" + iList.PlayerImg + "' where PlayerID = '" + iList.PlayerID + "'";
+            string Query = "Update PlayerDetails set PlayerName = '" + iList.PlayerName + "', Born = '" + iList.Born + "', City = '" + iList.City + "', Age = '" + iList.Age + "', BattingStyle = '" + iList.BattingStyle + "', BowlingStyle = '" + iList.BowlingStyle + "', PlayingRole = '" + iList.PlayingRole + "', Team = '" + iList.Team + "',  PlayerImg = '" + iList.PlayerImg + "' where PlayerID = '" + iList.PlayerID + "'";
             SqlCommand cmd = new SqlCommand(Query, con);
             int res = cmd.ExecuteNonQuery();
             con.Close();

@@ -55,9 +55,9 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                <label asp-for="Country" class="control-label">Country</label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
+                    <label asp-for="City" class="control-label">City</label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-4">
@@ -140,11 +140,11 @@
             </div>  
         </div>
 
-        <div class="row"> 
+        <div class="row" method="post" enctype="multipart/form-data">
             <div class="col-md-8">
                     <div class="form-group">
                         <label asp-for="PlayerImg" class="control-label">Player Image</label>
-                        <input type="file" name="ImageFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
+                        <input type="file" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
                         <span asp-validation-for="PlayerImg" class="text-danger"></span>
                     </div>
             </div>
@@ -152,7 +152,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <a asp-action="Index">View List</a>
+                    <a asp-action="Index">Players List</a>
                 </div>
             </div>
         </div>
