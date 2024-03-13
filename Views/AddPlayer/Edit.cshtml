@@ -34,10 +34,22 @@
 <hr />
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="row">
-        <div class="col-md-4" style="display:flex; justify-content:center;padding:20px">
-            <img class="PlayerImg" style="height:250px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
+        <div class="col-md-4" style="display:flex;flex-direction:column;padding:20px">
+
+            <div class="row">
+                <img class="PlayerImg" style="width:250px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
+            </div><br />
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="PlayerImg" class="control-label">Change Image</label>
+                    <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
+                    <span asp-validation-for="PlayerImg" class="text-danger"></span>
+                </div>
+            </div>
         </div>
+
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
@@ -145,18 +157,11 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Team" class="control-label">Team</label>
                         <input asp-for="Team" class="form-control" />
                         <span asp-validation-for="Team" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="PlayerImg" class="control-label">Player Image</label>
-                        <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
-                        <span asp-validation-for="PlayerImg" class="text-danger"></span>
                     </div>
                 </div>
             </div>
