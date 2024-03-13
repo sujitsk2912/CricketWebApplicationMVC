@@ -19,35 +19,18 @@
         width: 90%;
     }
 
-    .player-box {
-        display: flex;
-        align-items: center;
-        border: 1px solid #ccc;
-        padding: 5px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        border-radius: 4px;
-    }
-
-    .added-player {
-        margin-right: 5px;
-    }
-
-    .close-icon {
-        cursor: pointer;
-        color: #888;
-        font-size: 18px;
-        margin-left: 5px;
+    
+    .col-md-3{
+        margin:5px;
     }
 
     .suggestions-box {
-        background-color: #202020;
+        background-color: black;
         border-radius: 5px;
         padding: 10px;
         max-height: 150px;
-        width: 100%;
+        width: 400px;
         overflow-y: auto;
-        margin-bottom: 20px;
     }
 
     .suggestion-item {
@@ -55,30 +38,29 @@
         cursor: pointer;
         padding: 5px 10px 5px 10px;
         border-bottom: 1px solid #333;
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
+        font-size:16px;
     }
 
         .suggestion-item:hover {
             background-color: #333;
-            border-radius: 5px;
+            border-radius:5px;
         }
 
-    #addedPlayersContainer {
-        display: flex;
-        flex-wrap: wrap;
-        place-items: center;
-        gap: 5px;
+    .input-group-append{
+       
     }
+
+    .clear-input{
+        background-color:#fff;
+    }
+
+    .clear-input:hover{
+        background-color:aliceblue;
+        cursor:pointer;
+    }
+
 </style>
 
-<div id="playerBoxTemplate" class="d-none">
-    <div class="player-box">
-        <div class="added-player"></div>
-        <span class="close-icon" title="Remove">&times;</span>
-    </div>
-</div>
 
 <center>
     <h2>Add Team</h2>
@@ -103,7 +85,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="TeamLogo" class="control-label">Team Logo</label>
-                <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="TeamLogo" asp-for="TeamLogo" class="form-control" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" />
+                <input type="file" name="UploadImg" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="TeamLogo" asp-for="TeamLogo" class="form-control" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" />
                 <span asp-validation-for="TeamLogo" class="text-danger"></span>
             </div>
         </div>
@@ -116,25 +98,116 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="row">
+        <div class="col-md-8">
+           
                 <div class="form-group">
-                    <label asp-for="Player" class="control-label">Player Name</label>
-                    <div class="input-group">
-                        <input id="playerNameInput" asp-for="Player" class="form-control" style="width: 70%; border-radius: 4px;" />
-                        <input type="button" id="addButton" value="Add" class="btn btn-primary" style="width: 25%; margin-left: 10px; border-radius: 4px;" />
+                    <label class="control-label">Player Names</label>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player1" placeholder="Player 1"  class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player2" placeholder="Player 2" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player3" placeholder="Player 3" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player4" placeholder="Player 4" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player5" placeholder="Player 5" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player6" placeholder="Player 6" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player7" placeholder="Player 7" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player8" placeholder="Player 8" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player9" placeholder="Player 9" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player10" placeholder="Player 10" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input id="playerNameInput" asp-for="Player11" placeholder="Player 11" class="form-control" style="border-radius: 4px;" />
+                            <div class="input-group-append">
+                                <span class="input-group-text clear-input">&times;</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <span asp-validation-for="Player" class="text-danger"></span>
             <div id="suggestionsContainer"></div>
-
-            <!-- Container to display added players -->
-            <div class="row">
-                <div id="addedPlayersContainer"></div>
-            </div>
         </div>
+
         <br />
+
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group" style="display:flex; justify-content:center">
@@ -142,6 +215,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </form>
 
 
@@ -154,6 +228,16 @@
 <script>
         alert('@alertMessage');
 </script>
+
+    <script>
+        var loadFile = function (event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+    </script>
 }
 
 
@@ -162,75 +246,23 @@
   
     <script>
         $(document).ready(function () {
-            const playerNameInput = $('#playerNameInput');
+            const playerInputs = $('[id^=playerNameInput]');
             const suggestionsContainer = $('#suggestionsContainer');
-            const addedPlayersContainer = $('#addedPlayersContainer');
 
-            playerNameInput.on('input', function () {
-                const query = playerNameInput.val();
+            // Initialize a map to store suggestions for each input field
+            const suggestionsMap = {};
+
+            playerInputs.on('input', function () {
+                const query = $(this).val();
+                const inputField = $(this); // Reference to the input field
 
                 // Call the backend API with the query and handle the response
                 $.get(`/AddTeam/GetPlayerSuggestions?query=${query}`, function (data) {
-                    displaySuggestions(data);
+                    displaySuggestions(data, inputField);
                 });
             });
 
-            $('#addButton').on('click', function () {
-                const playerName = playerNameInput.val().trim();
-
-                // Check if the input is not empty
-                if (playerName !== '') {
-                    // Check if the player is not already added
-                    if (!isPlayerAlreadyAdded(playerName)) {
-                        // Check if 11 players are already added
-                        if (addedPlayersContainer.children().length < 11) {
-                            // Add the player to the list
-                            addPlayer(playerName);
-
-                            // Clear the input field and suggestions
-                            playerNameInput.val('');
-                            suggestionsContainer.empty();
-                        } else {
-                            alert('You can add only 11 players.');
-                        }
-                    } else {
-                        alert('Player already added.');
-                    }
-                }
-            });
-
-            function isPlayerAlreadyAdded(playerName) {
-                // Check if the player is already added
-                return addedPlayersContainer.find('.added-player').filter(function () {
-                    return $(this).text() === playerName;
-                }).length > 0;
-            }
-
-            function addPlayer(playerName) {
-                // Clone the player box
-                const playerBoxTemplate = $('#playerBoxTemplate').clone().removeAttr('id').removeClass('d-none');
-
-                // Set the player name
-                playerBoxTemplate.find('.added-player').text(playerName);
-
-                // Attach click event to close icon to remove the player
-                playerBoxTemplate.find('.close-icon').on('click', function () {
-                    playerBoxTemplate.remove();
-                });
-
-                // Append the cloned player box to the addedPlayersContainer
-                addedPlayersContainer.append(playerBoxTemplate);
-
-                // Add the player name to the hidden input field for form submission
-                const hiddenInput = $('<input>').attr({
-                    type: 'hidden',
-                    name: 'TeamPlayerName',
-                    value: playerName
-                });
-                playerBoxTemplate.append(hiddenInput);
-            }
-
-            function displaySuggestions(suggestions) {
+            function displaySuggestions(suggestions, inputField) {
                 // Clear previous suggestions
                 suggestionsContainer.empty();
 
@@ -238,28 +270,77 @@
                 const suggestionsBox = $('<div class="suggestions-box"></div>');
                 suggestions.forEach(function (suggestion) {
                     const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
-                    const closeIcon = $('<span class="close-icon" title="Remove">&times;</span>');
-
-                    // Attach click event to suggestion
-                    suggestionItem.on('click', function () {
-                        playerNameInput.val(suggestion);
-                        suggestionsContainer.empty();
-                    });
-
-                    // Attach click event to close icon to remove suggestion
-                    closeIcon.on('click', function (event) {
-                        event.stopPropagation();
-                        suggestionItem.remove();
-                    });
-
-                    // Append suggestion item and close icon to suggestionsBox
                     suggestionsBox.append(suggestionItem);
-                    suggestionItem.append(closeIcon);
+
+                    // Attach click event to suggestion items
+                    suggestionItem.on('click', function () {
+                        const playerName = $(this).text();
+                        // Check if the player name is not already present in any other input field
+                        if (!isPlayerNameUsed(playerName, inputField.attr('id'))) {
+                            // Check if the player name is not already added to the same input field
+                            if (!isPlayerNameAdded(playerName)) {
+                                inputField.val(playerName); // Insert the clicked suggestion into the input box associated with the suggestion
+                                suggestionsContainer.empty();
+                            } else {
+                                // Show alert if player name is already added to the same input field
+                                alert("Player name already added to this input field");
+                            }
+                        } else {
+                            // Show alert if player name is already used in another field
+                            alert("Player name already added to another input field");
+                        }
+                    });
                 });
 
                 suggestionsContainer.append(suggestionsBox);
             }
+
+            // Function to check if a player name is already used in any other input field
+            function isPlayerNameUsed(playerName, currentInputId) {
+                let isUsed = false;
+                playerInputs.each(function () {
+                    const inputId = $(this).attr('id');
+                    if (inputId !== currentInputId && $(this).val() === playerName) {
+                        isUsed = true;
+                        return false; // Break the loop if player name is found in any other input field
+                    }
+                });
+                return isUsed;
+            }
+
+            // Function to check if a player name is already added to the same input field
+            function isPlayerNameAdded(playerName) {
+                let isAdded = false;
+                playerInputs.each(function () {
+                    if ($(this).val() === playerName) {
+                        isAdded = true;
+                        return false; // Break the loop if player name is found in the same input field
+                    }
+                });
+                return isAdded;
+            }
+
+            // Add clear button functionality
+            $(document).on('click', '.clear-input', function () {
+                const inputField = $(this).closest('.input-group').find('input');
+                inputField.val(''); // Clear the input field
+            });
+
+            // Update suggestionsMap on form submission
+            $('form').on('submit', function () {
+                playerInputs.each(function () {
+                    const playerId = $(this).attr('id');
+                    const playerName = $(this).val();
+                    if (!suggestionsMap[playerId]) {
+                        suggestionsMap[playerId] = [];
+                    }
+                    if (playerName && !suggestionsMap[playerId].includes(playerName)) {
+                        suggestionsMap[playerId].push(playerName);
+                    }
+                });
+            });
         });
+
     </script>
 
     @{
