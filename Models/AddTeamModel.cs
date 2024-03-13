@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CricketWebApplicationMVC.Models
 {
@@ -7,7 +8,6 @@ namespace CricketWebApplicationMVC.Models
         public string TeamName { get; set; }
         public string TeamLogo { get; set; }
 
-        [Required(ErrorMessage = "Team players are required.")]
-        public string[] TeamPlayerName { get; set; } = new string[11];
+        public List<string> Player { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CricketWebApplicationMVC.Models;
-
 
 namespace CricketWebApplicationMVC.Controllers
 {
@@ -25,7 +25,7 @@ namespace CricketWebApplicationMVC.Controllers
         [HttpGet]
         public IActionResult AddTeam()
         {
-            return View();
+            return View(new AddTeamModel());
         }
 
         [HttpPost]
@@ -35,6 +35,7 @@ namespace CricketWebApplicationMVC.Controllers
             {
                 if (UploadFile != null && UploadFile.Length > 0)
                 {
+                    // Handle file upload
                     string filename = Path.GetFileName(UploadFile.FileName);
                     string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
 
@@ -50,35 +51,17 @@ namespace CricketWebApplicationMVC.Controllers
                     }
 
                     team.TeamLogo = filename;
-
-                    TeamDBHandler dbHandler = new TeamDBHandler();
-
-                    if (dbHandler.AddTeam(team))
-                    {
-                        TempData["AlertMessage"] = "Team Added Successfully";
-
-                        // Show alert when 11 players are added
-                        if (team.TeamPlayerName.Length == 11)
-                        {
-                            TempData["AlertMessage"] = "Team Added Successfully. 11 players added.";
-                        }
-
-                        ModelState.Clear();
-                        return RedirectToAction("AddTeam");
-                    }
-                    else
-                    {
-                        TempData["AlertMessage"] = "Failed to add team. Please try again.";
-                    }
                 }
+               
             }
             catch (Exception ex)
             {
                 TempData["AlertMessage"] = "Error: " + ex.Message;
             }
 
-            return View();
+            return View(team);
         }
+
 
         [HttpGet]
         public JsonResult GetPlayerSuggestions(string query)
@@ -87,6 +70,5 @@ namespace CricketWebApplicationMVC.Controllers
             List<string> playerSuggestions = dbHandler.GetPlayerSuggestions(query);
             return Json(playerSuggestions);
         }
-
     }
 }

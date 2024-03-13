@@ -16,34 +16,35 @@ namespace CricketWebApplicationMVC.Models
             con = new SqlConnection(connection);
         }
 
-        public bool AddTeam(AddTeamModel team)
+        public bool AddTeam(AddTeamModel team, List<string> players)
         {
             Connection();
             con.Open();
 
-            // Construct the dynamic query for variable number of players
+            // Construct the query to insert team details
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO Teams (TeamName, TeamLogo");
             StringBuilder valuesBuilder = new StringBuilder(") VALUES (@TeamName, @TeamLogo");
 
             // Add parameters for players dynamically
-            for (int i = 0; i < team.TeamPlayerName.Length; i++)
+            for (int i = 0; i < team.Player.Count; i++)
             {
                 string parameterName = $"@Player{i + 1}";
-                queryBuilder.Append($", {parameterName}");
+                queryBuilder.Append($", Player{i + 1}");
                 valuesBuilder.Append($", {parameterName}");
             }
 
             string query = queryBuilder.ToString() + valuesBuilder.ToString() + ")";
             SqlCommand cmd = new SqlCommand(query, con);
 
-            // Use parameters to avoid SQL injection and handle blank values
+            // Add parameters for team name and logo
             cmd.Parameters.AddWithValue("@TeamName", team.TeamName);
             cmd.Parameters.AddWithValue("@TeamLogo", team.TeamLogo);
 
-            for (int i = 0; i < team.TeamPlayerName.Length; i++)
+            // Add parameters for players
+            for (int i = 0; i < team.Player.Count; i++)
             {
                 string parameterName = $"@Player{i + 1}";
-                string playerName = team.TeamPlayerName[i];
+                string playerName = team.Player[i];
 
                 // Use DBNull.Value for blank values
                 cmd.Parameters.AddWithValue(parameterName, string.IsNullOrWhiteSpace(playerName) ? (object)DBNull.Value : playerName);
