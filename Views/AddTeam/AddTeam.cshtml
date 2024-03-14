@@ -29,7 +29,7 @@
         border-radius: 5px;
         padding: 10px;
         max-height: 150px;
-        width: 400px;
+        width: 100%;
         overflow-y: auto;
     }
 
@@ -39,6 +39,8 @@
         padding: 5px 10px 5px 10px;
         border-bottom: 1px solid #333;
         font-size:16px;
+        display: flex;
+        justify-content: space-between;
     }
 
         .suggestion-item:hover {
@@ -203,8 +205,9 @@
                     </div>
                 </div>
             </div>
-            <div id="suggestionsContainer"></div>
         </div>
+
+        <div style="width:100%; padding:10px 30px;" class="col-md-6" id="suggestionsContainer"></div>
 
         <br />
 
@@ -212,6 +215,14 @@
             <div class="col-md-4">
                 <div class="form-group" style="display:flex; justify-content:center">
                     <input type="submit" value="Add Team" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <a asp-action="ManageTeam">Edit</a>
                 </div>
             </div>
         </div>
@@ -270,6 +281,8 @@
                 const suggestionsBox = $('<div class="suggestions-box"></div>');
                 suggestions.forEach(function (suggestion) {
                     const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
+                    const clearButton = $('<span class="clear-suggestion">&times;</span>'); // Create clear button
+                    suggestionItem.append(clearButton); // Add clear button to suggestion item
                     suggestionsBox.append(suggestionItem);
 
                     // Attach click event to suggestion items
@@ -290,11 +303,18 @@
                             alert("Player name already added to another input field");
                         }
                     });
+
+                    // Attach click event to clear button to remove suggestion
+                    clearButton.on('click', function (event) {
+                        event.stopPropagation(); // Prevent click event propagation to suggestionItem
+                        suggestionItem.remove(); // Remove the suggestion item from suggestions box
+                    });
                 });
 
                 suggestionsContainer.append(suggestionsBox);
             }
 
+           
             // Function to check if a player name is already used in any other input field
             function isPlayerNameUsed(playerName, currentInputId) {
                 let isUsed = false;
@@ -327,21 +347,28 @@
             });
 
             // Update suggestionsMap on form submission
-            $('form').on('submit', function () {
+            // Update suggestionsMap on form submission and check if 11 players are entered
+            $('form').on('submit', function (event) {
+                event.preventDefault(); // Prevent the form from submitting initially
+
+                let playersCount = 0;
                 playerInputs.each(function () {
-                    const playerId = $(this).attr('id');
-                    const playerName = $(this).val();
-                    if (!suggestionsMap[playerId]) {
-                        suggestionsMap[playerId] = [];
-                    }
-                    if (playerName && !suggestionsMap[playerId].includes(playerName)) {
-                        suggestionsMap[playerId].push(playerName);
+                    if ($(this).val().trim() !== '') {
+                        playersCount++;
                     }
                 });
+
+                if (playersCount < 11) {
+                    alert("11 players required");
+                } else {
+                    // Allow the form to submit if 11 players are entered
+                    $(this).off('submit').submit();
+                }
             });
         });
 
     </script>
+
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
