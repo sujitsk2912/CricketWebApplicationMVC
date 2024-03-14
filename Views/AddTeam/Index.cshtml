@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CricketWebApplicationMVC.Models.AddTeamModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.3/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<style>
+    th {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .TeamLogo {
+        text-align: center;
+    }
+</style>
+
+<h2>Registered Teams</h2>
+
+<p>
+    <a asp-action="AddTeam">Add Team</a>
+</p>
+
+<table id="table" data-toggle="table" data-height="460" data-search="true" data-pagination="true">
+    <thead>
+        <tr>
+            <th data-field="TeamID">ID</th>
+            <th data-field="TeamName">Team Name</th>
+            <th data-field="TeamLogo">Team Logo</th>
+            <th data-field="Player1">Player 1</th>
+            <th data-field="Player2">Player 2</th>
+            <th data-field="Player3">Player 3</th>
+            <th data-field="Player4">Player 4</th>
+            <th data-field="Player5">Player 5</th>
+            <th data-field="Player6">Player 6</th>
+            <th data-field="Player7">Player 7</th>
+            <th data-field="Player8">Player 8</th>
+            <th data-field="Player9">Player 9</th>
+            <th data-field="Player10">Player 10</th>
+            <th data-field="Player11">Player 11</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TeamID</td>
+                <td>@item.TeamName</td>
+                <td class="TeamLogo">
+                    <img src="~/TeamLogo/@item.TeamLogo" alt="Team Image" style="max-width: 100px; max-height: 100px;" />
+                </td>
+                <td>@item.Player1</td>
+                <td>@item.Player2</td>
+                <td>@item.Player3</td>
+                <td>@item.Player4</td>
+                <td>@item.Player5</td>
+                <td>@item.Player6</td>
+                <td>@item.Player7</td>
+                <td>@item.Player8</td>
+                <td>@item.Player9</td>
+                <td>@item.Player10</td>
+                <td>@item.Player11</td>
+                <td>
+                    <a href="@Url.Action("ManageTeam", "ManageTeam", new { TeamID = item.TeamID })">Edit</a>
+                    <a href="@Url.Action("Details", new { TeamID = item.TeamID })">Details</a>
+                    <a href="@Url.Action("Delete", new { TeamID = item.TeamID })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.3/dist/bootstrap-table.min.js"></script>

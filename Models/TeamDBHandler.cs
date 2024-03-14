@@ -81,5 +81,104 @@ namespace CricketWebApplicationMVC.Models
             con.Close();
             return playerSuggestions;
         }
+
+        public List<AddTeamModel> GetRecords()
+        {
+            List<AddTeamModel> li = new List<AddTeamModel>();
+            Connection();
+            con.Open();
+            string Query = "select * from Teams";
+            SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
+            DataSet ds = new DataSet();
+            adapter.Fill(ds, "TeamsDs");
+
+            foreach (DataRow dr in ds.Tables["TeamsDs"].Rows)
+            {
+                li.Add(new AddTeamModel
+                {
+                    TeamID = Convert.ToInt32(dr["TeamID"]),
+                    TeamName = dr["TeamName"].ToString(),
+                    TeamLogo = dr["TeamLogo"].ToString(),
+                    Player1 = dr["Player1"].ToString(),
+                    Player2 = dr["Player2"].ToString(),
+                    Player3 = dr["Player3"].ToString(),
+                    Player4 = dr["Player4"].ToString(),
+                    Player5 = dr["Player5"].ToString(),
+                    Player6 = dr["Player6"].ToString(),
+                    Player7 = dr["Player7"].ToString(),
+                    Player8 = dr["Player8"].ToString(),
+                    Player9 = dr["Player9"].ToString(),
+                    Player10 = dr["Player10"].ToString(),
+                    Player11 = dr["Player11"].ToString()
+                });
+            }
+
+            return li;
+        }
+
+
+
+       /* public bool UpdateRecord(AddPlayerModel iList)
+        {
+            Connection();
+            con.Open();
+
+            string Query = "Update PlayerDetails set PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole, Team = @Team";
+
+            // Check if a new image file is selected
+            if (iList.PlayerImg != null)
+            {
+                Query += ", PlayerImg = @PlayerImg";
+            }
+
+            Query += " where PlayerID = @PlayerID";
+
+            SqlCommand cmd = new SqlCommand(Query, con);
+            cmd.Parameters.AddWithValue("@PlayerName", iList.PlayerName);
+            cmd.Parameters.AddWithValue("@Born", iList.Born);
+            cmd.Parameters.AddWithValue("@City", iList.City);
+            cmd.Parameters.AddWithValue("@Age", iList.Age);
+            cmd.Parameters.AddWithValue("@BattingStyle", iList.BattingStyle);
+            cmd.Parameters.AddWithValue("@BowlingStyle", iList.BowlingStyle);
+            cmd.Parameters.AddWithValue("@PlayingRole", iList.PlayingRole);
+            cmd.Parameters.AddWithValue("@Team", iList.Team);
+            cmd.Parameters.AddWithValue("@PlayerID", iList.PlayerID);
+
+            if (iList.PlayerImg != null)
+            {
+                cmd.Parameters.AddWithValue("@PlayerImg", iList.PlayerImg);
+            }
+
+            int res = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (res > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public bool DeleteRecord(int PlayerId)
+        {
+            Connection();
+            con.Open();
+            string Query = "delete from PlayerDetails where PlayerID = '" + PlayerId + "'";
+            SqlCommand cmd = new SqlCommand(Query, con);
+            int res = cmd.ExecuteNonQuery();
+
+            if (res > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }*/
     }
 }

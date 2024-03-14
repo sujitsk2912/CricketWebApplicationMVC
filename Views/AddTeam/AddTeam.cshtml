@@ -222,7 +222,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <a asp-action="ManageTeam">Edit</a>
+                    <a asp-action="Index">View Teams</a>
                 </div>
             </div>
         </div>
@@ -259,6 +259,7 @@
         $(document).ready(function () {
             const playerInputs = $('[id^=playerNameInput]');
             const suggestionsContainer = $('#suggestionsContainer');
+            let submittingForm = false; // Flag to track form submission
 
             // Initialize a map to store suggestions for each input field
             const suggestionsMap = {};
@@ -281,8 +282,6 @@
                 const suggestionsBox = $('<div class="suggestions-box"></div>');
                 suggestions.forEach(function (suggestion) {
                     const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
-                    const clearButton = $('<span class="clear-suggestion">&times;</span>'); // Create clear button
-                    suggestionItem.append(clearButton); // Add clear button to suggestion item
                     suggestionsBox.append(suggestionItem);
 
                     // Attach click event to suggestion items
@@ -303,18 +302,11 @@
                             alert("Player name already added to another input field");
                         }
                     });
-
-                    // Attach click event to clear button to remove suggestion
-                    clearButton.on('click', function (event) {
-                        event.stopPropagation(); // Prevent click event propagation to suggestionItem
-                        suggestionItem.remove(); // Remove the suggestion item from suggestions box
-                    });
                 });
 
                 suggestionsContainer.append(suggestionsBox);
             }
 
-           
             // Function to check if a player name is already used in any other input field
             function isPlayerNameUsed(playerName, currentInputId) {
                 let isUsed = false;
@@ -349,6 +341,7 @@
             // Update suggestionsMap on form submission
             // Update suggestionsMap on form submission and check if 11 players are entered
             $('form').on('submit', function (event) {
+                submittingForm = true; // Set submittingForm flag to true when form is submitted
                 event.preventDefault(); // Prevent the form from submitting initially
 
                 let playersCount = 0;

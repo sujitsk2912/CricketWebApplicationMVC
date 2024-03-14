@@ -19,7 +19,8 @@ namespace CricketWebApplicationMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            TeamDBHandler dBHandler = new TeamDBHandler();
+            return View(dBHandler.GetRecords());
         }
 
         [HttpGet]
@@ -79,6 +80,12 @@ namespace CricketWebApplicationMVC.Controllers
             TeamDBHandler dbHandler = new TeamDBHandler();
             List<string> playerSuggestions = dbHandler.GetPlayerSuggestions(query);
             return Json(playerSuggestions);
+        }
+
+        public IActionResult Details(int TeamId)
+        {
+            TeamDBHandler dBHandler = new TeamDBHandler();
+            return View(dBHandler.GetRecords().Find(getDetails => getDetails.TeamID == TeamId));
         }
     }
 }

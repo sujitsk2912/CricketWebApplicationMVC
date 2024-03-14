@@ -11,7 +11,9 @@
         font-size:16px;
         font-weight:500;
     }
-    td{
+
+    .PlayerImg {
+        text-align:center;
     }
 </style>
 
@@ -50,7 +52,9 @@
                 <td>@item.BowlingStyle</td>
                 <td>@item.PlayingRole</td>
                 <td>@item.Team</td>
-                <td>@item.PlayerImg</td>
+                <td class="PlayerImg">
+                    <img src="~/PlayerImg/@item.PlayerImg" alt="Player Image" style="max-width: 100px; max-height: 100px;" />
+                </td>
                 <td>
                     <a href="@Url.Action("Edit", new { PlayerID = item.PlayerID })">Edit</a>
                     <a href="@Url.Action("Details", new { PlayerID = item.PlayerID })">Details</a>
