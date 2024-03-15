@@ -121,12 +121,32 @@ namespace CricketWebApplicationMVC.Controllers
             return View(iList);
         }
 
-        public IActionResult Details(int PlayerId)
+        public IActionResult DetailsByID(int PlayerID)
         {
             PlayerDBHandler dBHandler = new PlayerDBHandler();
-            return View(dBHandler.GetRecords().Find(getDetails => getDetails.PlayerID == PlayerId));
+            var player = dBHandler.GetRecords().Find(getDetails => getDetails.PlayerID == PlayerID);
+            if (player == null)
+            {
+                return RedirectToAction("PlayerNotFound");
+            }
+            return View(player);
         }
 
+        public IActionResult DetailsByName(string PlayerName)
+        {
+            PlayerDBHandler dBHandler = new PlayerDBHandler();
+            var player = dBHandler.GetRecords().Find(getDetails => getDetails.PlayerName == PlayerName);
+            if (player == null)
+            {
+                return RedirectToAction("PlayerNotFound");
+            }
+            return View(player);
+        }
+
+        public IActionResult PlayerNotFound()
+        {
+            return View();
+        }
         public IActionResult Delete(int PlayerId)
         {
             PlayerDBHandler dBHandler = new PlayerDBHandler();
@@ -134,5 +154,6 @@ namespace CricketWebApplicationMVC.Controllers
             return RedirectToAction("Index");
         }
 
+       
     }
 }

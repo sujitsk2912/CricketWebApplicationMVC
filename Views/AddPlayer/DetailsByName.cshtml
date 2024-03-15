@@ -1,0 +1,171 @@
+﻿@model CricketWebApplicationMVC.Models.AddPlayerModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<style>
+  
+    .row {
+        place-content: center;
+        padding: 5px;
+    }
+
+    dt{
+        font-weight:500;
+    }
+   
+    .col-sm-10{
+   
+    }
+
+    .col-sm-2{
+       
+    }
+    .btn {
+        width: 90%;
+    }
+
+</style>
+
+<center>
+    <h2>Player Details</h2>
+</center>
+
+
+<div>
+
+    <hr />
+
+    <dl class="row">
+        <div class="col-md-4" style="display:flex;justify-content:center;place-items:center">
+            <dd>
+                <img class="PlayerImg" style="height:300px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
+            </dd>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PlayerID)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.PlayerID)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PlayerName)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.PlayerName)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Born)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.Born)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.City)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.City)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Age)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.Age)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.BattingStyle)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.BattingStyle)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.BowlingStyle)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.BowlingStyle)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PlayingRole)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.PlayingRole)
+                    </dd>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Team)
+                    </dt>
+                </div>
+                <div class="col-sm-8">
+                    <dd>
+                        @Html.DisplayFor(model => model.Team)
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { PlayerID = Model.PlayerID  }) |
+    @Html.ActionLink("Delete", "Delete", new { PlayerID = Model.PlayerID }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+

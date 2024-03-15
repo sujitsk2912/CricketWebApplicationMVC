@@ -48,7 +48,6 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Team ID</label>
-                        @* @Html.DisplayNameFor(model => model.TeamID) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
@@ -62,7 +61,6 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Team Name</label>
-                        @* @Html.DisplayNameFor(model => model.TeamName) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
@@ -80,7 +78,7 @@
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.ActionLink(Model.Player1, "AddPlayer", "Details", new { playerId = Model.Player1 }, null)
+                        @Html.ActionLink(Model.Player1, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player1 })
                     </dd>
                 </div>
             </div>
@@ -89,12 +87,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 2</label>
-                        @* @Html.DisplayNameFor(model => model.Player2) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player2)
+                        @Html.ActionLink(Model.Player2, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player2 })
                     </dd>
                 </div>
             </div>
@@ -104,12 +101,11 @@
                     <dt>
 
                         <label>Player 3</label>
-                        @* @Html.DisplayNameFor(model => model.Player3) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player3)
+                        @Html.ActionLink(Model.Player3, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player3 })
                     </dd>
                 </div>
             </div>
@@ -118,12 +114,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 4</label>
-                        @* @Html.DisplayNameFor(model => model.Player4) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player4)
+                        @Html.ActionLink(Model.Player4, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player4 })
                     </dd>
                 </div>
             </div>
@@ -132,12 +127,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 5</label>
-                        @* @Html.DisplayNameFor(model => model.Player5) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player5)
+                        @Html.ActionLink(Model.Player5, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player5 })
                     </dd>
                 </div>
             </div>
@@ -146,12 +140,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 6</label>
-                        @* @Html.DisplayNameFor(model => model.Player6) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player6)
+                        @Html.ActionLink(Model.Player6, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player6 })
                     </dd>
                 </div>
             </div>
@@ -160,12 +153,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 7</label>
-                        @* @Html.DisplayNameFor(model => model.Player7) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player7)
+                        @Html.ActionLink(Model.Player7, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player7 })
                     </dd>
                 </div>
             </div>
@@ -174,12 +166,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 8</label>
-                        @* @Html.DisplayNameFor(model => model.Player8) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player8)
+                        @Html.ActionLink(Model.Player8, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player8 })
                     </dd>
                 </div>
             </div>
@@ -188,12 +179,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 9</label>
-                        @* @Html.DisplayNameFor(model => model.Player9) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player9)
+                        @Html.ActionLink(Model.Player9, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player9 })
                     </dd>
                 </div>
             </div>
@@ -202,12 +192,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 10</label>
-                        @* @Html.DisplayNameFor(model => model.Player10) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player10)
+                        @Html.ActionLink(Model.Player10, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player10 })
                     </dd>
                 </div>
             </div>
@@ -216,12 +205,11 @@
                 <div class="col-sm-4">
                     <dt>
                         <label>Player 11</label>
-                        @* @Html.DisplayNameFor(model => model.Player11) *@
                     </dt>
                 </div>
                 <div class="col-sm-8">
                     <dd>
-                        @Html.DisplayFor(model => model.Player11)
+                        @Html.ActionLink(Model.Player11, "DetailsByName", "AddPlayer", new { PlayerName = Model.Player11 })
                     </dd>
                 </div>
             </div>
@@ -229,7 +217,8 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { TeamID = Model.TeamID }) |
+    @Html.ActionLink("Edit", "ManageTeam", "ManageTeam", new { TeamID = Model.TeamID }) |
     @Html.ActionLink("Delete", "Delete", new { TeamID = Model.TeamID }) |
     <a asp-action="Index">Back to List</a>
 </div>
+

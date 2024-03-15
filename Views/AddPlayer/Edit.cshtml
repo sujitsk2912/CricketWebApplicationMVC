@@ -39,14 +39,15 @@
         <div class="col-md-4" style="display:flex;flex-direction:column;padding:20px">
 
             <div class="row">
-                <img class="PlayerImg" style="width:250px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
+                <img id="blah" class="PlayerImg" style="width:250px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
             </div><br />
             <div class="row">
                 <div class="form-group">
                     <label asp-for="PlayerImg" class="control-label">Change Image</label>
-                    <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" asp-for="PlayerImg" class="form-control" />
+                    <input type="file" name="UploadFile" accept="image/png, image/jpg, image/jpeg, image/WEBP" id="PlayerImg" class="form-control" onchange="loadImage(event)" />
                     <span asp-validation-for="PlayerImg" class="text-danger"></span>
                 </div>
+
             </div>
         </div>
 
@@ -186,10 +187,33 @@
 
 </form>
 
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(alertMessage))
+{
+    <script>
+        alert('@alertMessage');
+    </script>
+}
+
+<script>
+    function loadImage(event) {
+        var output = document.getElementById('blah');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src); // free memory
+        }
+    }
+</script>
+
 <script>
    function saveEdit(){
        alert("Record Edited Successfully");
    }
 </script>
+
+
 
 

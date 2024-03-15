@@ -87,5 +87,18 @@ namespace CricketWebApplicationMVC.Controllers
             TeamDBHandler dBHandler = new TeamDBHandler();
             return View(dBHandler.GetRecords().Find(getDetails => getDetails.TeamID == TeamId));
         }
+
+        public IActionResult PlayerDetails(string PlayerName)
+        {
+            PlayerDBHandler dBHandler = new PlayerDBHandler();
+            return View(dBHandler.GetRecords().Find(getDetails => getDetails.PlayerName == PlayerName));
+        }
+
+        public IActionResult Delete(int TeamID)
+        {
+            TeamDBHandler dBHandler = new TeamDBHandler();
+            dBHandler.DeleteRecord(TeamID);
+            return RedirectToAction("Index");
+        }
     }
 }

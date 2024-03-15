@@ -282,6 +282,8 @@
                 const suggestionsBox = $('<div class="suggestions-box"></div>');
                 suggestions.forEach(function (suggestion) {
                     const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
+                    const removeIcon = $('<span class="remove-player">&#10006;</span>'); // Cross icon to remove player
+                    suggestionItem.append(removeIcon);
                     suggestionsBox.append(suggestionItem);
 
                     // Attach click event to suggestion items
@@ -301,6 +303,14 @@
                             // Show alert if player name is already used in another field
                             alert("Player name already added to another input field");
                         }
+                    });
+
+                    // Attach click event to remove icon
+                    removeIcon.on('click', function (event) {
+                        event.stopPropagation(); // Prevent click event from bubbling up to suggestionItem
+                        const playerName = $(this).siblings('.suggestion-item').text();
+                        inputField.val(''); // Clear the input field
+                        $(this).parent().remove(); // Remove the suggestion from the list
                     });
                 });
 

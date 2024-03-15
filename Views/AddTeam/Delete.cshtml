@@ -1,0 +1,106 @@
+﻿@model CricketWebApplicationMVC.Models.AddTeamModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<div>
+    <h4>AddTeamModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TeamID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TeamName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamLogo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TeamLogo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Player1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Player1)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player2)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player2)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player3)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player3)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player4)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player4)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player5)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player5)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player6)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player6)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player7)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player7)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player8)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player8)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player9)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player9)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player10)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player10)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Player11)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Player11)
+        </dd>
+    </dl>
+
+    <form id="deleteForm" asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+
+
