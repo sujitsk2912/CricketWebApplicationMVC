@@ -73,19 +73,20 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
-        <div class="col-md-4" style="width:70%">
+        <div class="col-md-4">
             <div class="form-group">
-                <input placeholder="Enter Team ID" asp-for="TeamID" class="form-control" />
+                <input placeholder="Enter Team ID" id="teamIdInput" asp-for="TeamID" class="form-control" />
                 <span asp-validation-for="TeamID" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-2" style="width:30%">
+        <div class="col-md-2">
             <div class="form-group">
-                <input type="button" value="Enter" class="btn btn-primary" id="enterButton" />
+                <input type="button" id="enterButton" value="Enter" class="btn btn-primary" />
             </div>
         </div>
     </div>
 
+   
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -236,6 +237,7 @@
 
 
 @{
+
     var alertMessage = TempData["AlertMessage"] as string;
 }
 
@@ -255,24 +257,21 @@
             const suggestionsContainer = $('#suggestionsContainer');
             let submittingForm = false; // Flag to track form submission
 
-            // Initialize a map to store suggestions for each input field
             const suggestionsMap = {};
 
             playerInputs.on('input', function () {
                 const query = $(this).val();
                 const inputField = $(this); // Reference to the input field
 
-                // Call the backend API with the query and handle the response
+                
                 $.get(`/AddTeam/GetPlayerSuggestions?query=${query}`, function (data) {
                     displaySuggestions(data, inputField);
                 });
             });
 
             function displaySuggestions(suggestions, inputField) {
-                // Clear previous suggestions
                 suggestionsContainer.empty();
 
-                // Display new suggestions in a black box with good design
                 const suggestionsBox = $('<div class="suggestions-box"></div>');
                 suggestions.forEach(function (suggestion) {
                     const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
@@ -280,84 +279,79 @@
                     suggestionItem.append(removeIcon);
                     suggestionsBox.append(suggestionItem);
 
-                    // Attach click event to suggestion items
                     suggestionItem.on('click', function () {
                         const playerName = $(this).text();
-                        // Check if the player name is not already present in any other input field
+                       
                         if (!isPlayerNameUsed(playerName, inputField.attr('id'))) {
-                            // Check if the player name is not already added to the same input field
+                           
                             if (!isPlayerNameAdded(playerName)) {
-                                inputField.val(playerName); // Insert the clicked suggestion into the input box associated with the suggestion
+                                inputField.val(playerName); 
                                 suggestionsContainer.empty();
                             } else {
-                                // Show alert if player name is already added to the same input field
+                                
                                 alert("Player name already added to this input field");
                             }
                         } else {
-                            // Show alert if player name is already used in another field
+                       
                             alert("Player name already added to another input field");
                         }
                     });
 
-                    // Attach click event to remove icon
                     removeIcon.on('click', function (event) {
-                        event.stopPropagation(); // Prevent click event from bubbling up to suggestionItem
+                        event.stopPropagation(); 
                         const playerName = $(this).siblings('.suggestion-item').text();
-                        inputField.val(''); // Clear the input field
-                        $(this).parent().remove(); // Remove the suggestion from the list
+                        inputField.val(''); 
+                        $(this).parent().remove(); 
                     });
                 });
 
                 suggestionsContainer.append(suggestionsBox);
             }
 
-            // Function to check if a player name is already used in any other input field
+         
             function isPlayerNameUsed(playerName, currentInputId) {
                 let isUsed = false;
                 playerInputs.each(function () {
                     const inputId = $(this).attr('id');
                     if (inputId !== currentInputId && $(this).val() === playerName) {
                         isUsed = true;
-                        return false; // Break the loop if player name is found in any other input field
+                        return false; 
                     }
                 });
                 return isUsed;
             }
 
-            // Function to check if a player name is already added to the same input field
+           
             function isPlayerNameAdded(playerName) {
                 let isAdded = false;
                 playerInputs.each(function () {
                     if ($(this).val() === playerName) {
                         isAdded = true;
-                        return false; // Break the loop if player name is found in the same input field
+                        return false;
                     }
                 });
                 return isAdded;
             }
 
-            // Add clear button functionality
+
             $(document).on('click', '.clear-input', function () {
                 const inputField = $(this).closest('.input-group').find('input');
                 inputField.val(''); // Clear the input field
             });
 
-            // Update suggestionsMap on form submission
-            // Update suggestionsMap on form submission and check if 11 players are entered
-
             $('#enterButton').on('click', function () {
                 var teamId = $('#teamIdInput').val();
                 if (teamId.trim() !== '') {
+
                     alert("Enter button clicked with Team ID: " + teamId);
-                    // Add your code here to handle the Enter button click
                 } else {
                     alert("Please enter a valid team ID");
                 }
             });
 
             $('#saveButton').on('click', function (event) {
-                submittingForm = true; // Set submittingForm flag to true when form is submitted
-                event.preventDefault(); // Prevent the form from submitting initially
+                submittingForm = true; 
+                event.preventDefault();
 
                 let playersCount = 0;
                 playerInputs.each(function () {
@@ -371,13 +365,6 @@
                 } else {
                     // Allow the form to submit if 11 players are entered
                     $(this).off('#saveButton').submit();
-                }
-
-                if (allFieldsFilled) {
-                    alert("Save button clicked. All fields are filled.");
-                    // Add your code here to handle the Save button click
-                } else {
-                    alert("Please fill in all fields before saving.");
                 }
             });
         });
