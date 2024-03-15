@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CricketWebApplicationMVC.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CricketWebApplicationMVC.Controllers
 {
@@ -6,9 +7,9 @@ namespace CricketWebApplicationMVC.Controllers
     {
         public IActionResult CreateMatch()
         {
-            return View();
+            CreateMatchDBHandler dbHandler = new CreateMatchDBHandler();
+            var teams = dbHandler.GetTeams(); // Fetch teams from the database
+            return View(teams);
         }
-
-        
     }
 }

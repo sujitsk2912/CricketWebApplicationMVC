@@ -1,7 +1,7 @@
 ﻿@model CricketWebApplicationMVC.Models.AddTeamModel
 
 @{
-    ViewData["Title"] = "AddTeam";
+    ViewData["Title"] = "ManageTeam";
 }
 
 <style>
@@ -19,9 +19,9 @@
         width: 90%;
     }
 
-    
-    .col-md-3{
-        margin:5px;
+
+    .col-md-3 {
+        margin: 5px;
     }
 
     .suggestions-box {
@@ -38,40 +38,54 @@
         cursor: pointer;
         padding: 5px 10px 5px 10px;
         border-bottom: 1px solid #333;
-        font-size:16px;
+        font-size: 16px;
         display: flex;
         justify-content: space-between;
     }
 
         .suggestion-item:hover {
             background-color: #333;
-            border-radius:5px;
+            border-radius: 5px;
         }
 
-    .input-group-append{
-       
+    .input-group-append {
     }
 
-    .clear-input{
-        background-color:#fff;
+    .clear-input {
+        background-color: #fff;
     }
 
-    .clear-input:hover{
-        background-color:aliceblue;
-        cursor:pointer;
-    }
+        .clear-input:hover {
+            background-color: aliceblue;
+            cursor: pointer;
+        }
 
 </style>
 
 
 <center>
-    <h2>Add Team</h2>
+    <h2>Manage Team</h2>
 </center>
 
 <hr />
 
-<form asp-action="AddTeam" method="post" enctype="multipart/form-data">
+<form asp-action="EditTeamData" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input placeholder="Enter Team ID" id="teamIdInput" asp-for="TeamID" class="form-control" />
+                <span asp-validation-for="TeamID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <input type="button" id="enterButton" value="Enter" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-md-6">
@@ -94,21 +108,21 @@
 
         <div class="col-md-2">
             <div class="form-group">
-                <img id="blah" alt="" height="100px" />
+                <img id="blah" alt="" height="100px" class="TeamLogo" src="/TeamLogo/@Html.DisplayFor(model => model.TeamLogo)" />
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-8">
-           
-                <div class="form-group">
-                    <label class="control-label">Player Names</label>
+
+            <div class="form-group">
+                <label class="control-label">Player Names</label>
 
                 <div class="row">
                     <div class="col-md-3">
                         <div class="input-group">
-                            <input id="playerNameInput" asp-for="Player1" placeholder="Player 1"  class="form-control" style="border-radius: 4px;" />
+                            <input id="playerNameInput" asp-for="Player1" placeholder="Player 1" class="form-control" style="border-radius: 4px;" />
                             <div class="input-group-append">
                                 <span class="input-group-text clear-input">&times;</span>
                             </div>
@@ -129,7 +143,7 @@
                                 <span class="input-group-text clear-input">&times;</span>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
 
                 <div class="row">
@@ -214,15 +228,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group" style="display:flex; justify-content:center">
-                    <input type="submit" value="Add Team" class="btn btn-primary" />
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <a asp-action="Index">View Teams</a>
+                    <button type="button" id="saveButton" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -231,44 +237,33 @@
 
 
 @{
+
     var alertMessage = TempData["AlertMessage"] as string;
 }
 
 @if (!string.IsNullOrEmpty(alertMessage))
 {
-<script>
-        alert('@alertMessage');
-</script>
-
     <script>
-        var loadFile = function (event) {
-            var output = document.getElementById('output');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function () {
-                URL.revokeObjectURL(output.src) // free memory
-            }
-        };
+        alert('@alertMessage');
     </script>
 }
 
-
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  
+
     <script>
         $(document).ready(function () {
             const playerInputs = $('[id^=playerNameInput]');
             const suggestionsContainer = $('#suggestionsContainer');
             let submittingForm = false; // Flag to track form submission
 
-            // Initialize a map to store suggestions for each input field
             const suggestionsMap = {};
 
             playerInputs.on('input', function () {
                 const query = $(this).val();
                 const inputField = $(this); // Reference to the input field
 
-                // Call the backend API with the query and handle the response
+
                 $.get(`/AddTeam/GetPlayerSuggestions?query=${query}`, function (data) {
                     displaySuggestions(data, inputField);
                 });
@@ -307,42 +302,50 @@
                 suggestionsContainer.append(suggestionsBox);
             }
 
-            // Function to check if a player name is already used in any other input field
+
             function isPlayerNameUsed(playerName, currentInputId) {
                 let isUsed = false;
                 playerInputs.each(function () {
                     const inputId = $(this).attr('id');
                     if (inputId !== currentInputId && $(this).val() === playerName) {
                         isUsed = true;
-                        return false; // Break the loop if player name is found in any other input field
+                        return false;
                     }
                 });
                 return isUsed;
             }
 
-            // Function to check if a player name is already added to the same input field
+
             function isPlayerNameAdded(playerName) {
                 let isAdded = false;
                 playerInputs.each(function () {
                     if ($(this).val() === playerName) {
                         isAdded = true;
-                        return false; // Break the loop if player name is found in the same input field
+                        return false;
                     }
                 });
                 return isAdded;
             }
 
-            // Add clear button functionality
+
             $(document).on('click', '.clear-input', function () {
                 const inputField = $(this).closest('.input-group').find('input');
                 inputField.val(''); // Clear the input field
             });
 
-            // Update suggestionsMap on form submission
-            // Update suggestionsMap on form submission and check if 11 players are entered
-            $('form').on('submit', function (event) {
-                submittingForm = true; // Set submittingForm flag to true when form is submitted
-                event.preventDefault(); // Prevent the form from submitting initially
+            $('#enterButton').on('click', function () {
+                var teamId = $('#teamIdInput').val();
+                if (teamId.trim() !== '') {
+
+                    alert("Enter button clicked with Team ID: " + teamId);
+                } else {
+                    alert("Please enter a valid team ID");
+                }
+            });
+
+            $('#saveButton').on('click', function (event) {
+                submittingForm = true;
+                event.preventDefault();
 
                 let playersCount = 0;
                 playerInputs.each(function () {
@@ -355,13 +358,12 @@
                     alert("11 players required");
                 } else {
                     // Allow the form to submit if 11 players are entered
-                    $(this).off('submit').submit();
+                    $(this).off('#saveButton').submit();
                 }
             });
         });
 
     </script>
-
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

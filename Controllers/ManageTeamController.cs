@@ -12,13 +12,18 @@ namespace CricketWebApplicationMVC.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-
-        [HttpGet]
         public IActionResult ManageTeam(int TeamID)
         {
             ManageTeamDBHandler dbHandler = new ManageTeamDBHandler();
             var Team = dbHandler.GetRecords().Find(get => get.TeamID == TeamID);
             return View(Team);
         }
+
+       /* public IActionResult EditTeamData(int TeamID)
+        {
+            ManageTeamDBHandler dbHandler = new ManageTeamDBHandler();
+            var Team = dbHandler.GetRecords().Find(get => get.TeamID == TeamID);
+            return View(Team);
+        }*/
     }
 }

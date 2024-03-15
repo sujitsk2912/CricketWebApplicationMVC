@@ -255,6 +255,7 @@
         $(document).ready(function () {
             const playerInputs = $('[id^=playerNameInput]');
             const suggestionsContainer = $('#suggestionsContainer');
+            const teamIdInput = $('#teamIdInput');
             let submittingForm = false; // Flag to track form submission
 
             const suggestionsMap = {};
@@ -270,43 +271,38 @@
             });
 
             function displaySuggestions(suggestions, inputField) {
+                // Clear previous suggestions
                 suggestionsContainer.empty();
 
+                // Display new suggestions in a black box with good design
                 const suggestionsBox = $('<div class="suggestions-box"></div>');
                 suggestions.forEach(function (suggestion) {
                     const suggestionItem = $('<div class="suggestion-item"></div>').text(suggestion);
-                    const removeIcon = $('<span class="remove-player">&#10006;</span>'); // Cross icon to remove player
-                    suggestionItem.append(removeIcon);
                     suggestionsBox.append(suggestionItem);
 
+                    // Attach click event to suggestion items
                     suggestionItem.on('click', function () {
                         const playerName = $(this).text();
-                       
+                        // Check if the player name is not already present in any other input field
                         if (!isPlayerNameUsed(playerName, inputField.attr('id'))) {
-                           
+                            // Check if the player name is not already added to the same input field
                             if (!isPlayerNameAdded(playerName)) {
-                                inputField.val(playerName); 
+                                inputField.val(playerName); // Insert the clicked suggestion into the input box associated with the suggestion
                                 suggestionsContainer.empty();
                             } else {
-                                
+                                // Show alert if player name is already added to the same input field
                                 alert("Player name already added to this input field");
                             }
                         } else {
-                       
+                            // Show alert if player name is already used in another field
                             alert("Player name already added to another input field");
                         }
-                    });
-
-                    removeIcon.on('click', function (event) {
-                        event.stopPropagation(); 
-                        const playerName = $(this).siblings('.suggestion-item').text();
-                        inputField.val(''); 
-                        $(this).parent().remove(); 
                     });
                 });
 
                 suggestionsContainer.append(suggestionsBox);
             }
+
 
          
             function isPlayerNameUsed(playerName, currentInputId) {
@@ -333,6 +329,14 @@
                 return isAdded;
             }
 
+           /* teamIdInput.on('keypress', function (event) {
+                if (event.which === 13) { // Check if Enter key is pressed
+                    event.preventDefault(); // Prevent the default form submission behavior
+                    const teamId = $(this).val().trim();
+                    const teamUrl = `https://localhost:7072/ManageTeam/ManageTeam?TeamID=${teamId}`;
+                    alert("Team ID: " + teamUrl);
+                }
+            }); */
 
             $(document).on('click', '.clear-input', function () {
                 const inputField = $(this).closest('.input-group').find('input');
@@ -342,7 +346,6 @@
             $('#enterButton').on('click', function () {
                 var teamId = $('#teamIdInput').val();
                 if (teamId.trim() !== '') {
-
                     alert("Enter button clicked with Team ID: " + teamId);
                 } else {
                     alert("Please enter a valid team ID");

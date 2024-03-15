@@ -16,24 +16,23 @@ namespace CricketWebApplicationMVC.Models
             con = new SqlConnection(connection);
         }
 
-        public bool GetTeams(CreateMatchModel team)
+        public List<Team> GetTeams()
         {
             Connection();
             con.Open();
-
-            string Query = "Select TeamName from Teams";
+            List<Team> teams = new List<Team>();
+            string Query = "Select TeamName, TeamLogo from Teams";
             SqlCommand cmd = new SqlCommand(Query, con);
-            int res = cmd.ExecuteNonQuery();
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Team team = new Team();
+                team.TeamName = reader["TeamName"].ToString();
+                team.TeamLogo = reader["TeamLogo"].ToString();
+                teams.Add(team);
+            }
             con.Close();
-            if (res > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
+            return teams;
         }
     }
 }
