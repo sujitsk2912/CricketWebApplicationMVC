@@ -50,10 +50,6 @@
                     <label asp-for="TeamName" class="control-label">Team A</label>
                     <select id="TeamName" asp-for="TeamName" class="form-control">
                         <option>Select</option>
-                        @foreach (var team in Model)
-                        {
-                            <option value="@team.TeamName">@team.TeamName</option>
-                        }
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
                         <img class="TeamLogo" src="~/lib/view-soccer-gold-cup-field.jpg" />

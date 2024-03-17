@@ -79,7 +79,6 @@ namespace CricketWebApplicationMVC.Models
 
             string Query = "Update Teams set TeamName = @TeamName, Player1 = @Player1, Player2 = @Player2, Player3 = @Player3, Player4 = @Player4, Player5 = @Player5, Player6 = @Player6, Player7 = @Player7, Player8 = @Player8, Player9 = @Player9, Player10 = @Player10, Player11 = @Player11";
 
-            // Check if a new image file is selected
             if (iList.TeamLogo != null)
             {
                 Query += ", TeamLogo = @TeamLogo";

@@ -16,7 +16,7 @@ namespace CricketWebApplicationMVC.Models
             con = new SqlConnection(connection);
         }
 
-        public List<Team> GetTeams()
+       /* public List<Team> GetTeams()
         {
             Connection();
             con.Open();
@@ -33,6 +33,6 @@ namespace CricketWebApplicationMVC.Models
             }
             con.Close();
             return teams;
-        }
+        }*/
     }
 }
