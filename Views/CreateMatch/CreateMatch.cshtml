@@ -50,9 +50,13 @@
                     <label asp-for="TeamName" class="control-label">Team A</label>
                     <select id="TeamName" asp-for="TeamName" class="form-control">
                         <option>Select</option>
+                        @foreach (var team in ViewBag.Teams)
+                        {
+                            <option value="@team.TeamID">@team.TeamName</option>
+                        }
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img class="TeamLogo" src="~/lib/view-soccer-gold-cup-field.jpg" />
+                        <img id="teamLogo" class="TeamLogo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamLogo)" />
                     </div>
                 </div>
             </div>
@@ -67,10 +71,14 @@
                     <label asp-for="TeamName" class="control-label">Team B</label>
                     <select id="TeamName" asp-for="TeamName" class="form-control">
                         <option>Select</option>
+                        @foreach (var team in ViewBag.Teams)
+                        {
+                            <option value="@team.TeamID">@team.TeamName</option>
+                        }
                         <span asp-validation-for="TeamName" class="text-danger"></span>
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img class="TeamLogo" src="~/lib/view-soccer-gold-cup-field.jpg" />
+                        <img class="TeamLogo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamLogo)" />
                     </div>
                 </div>
             </div>
@@ -80,9 +88,9 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label asp-for="MatchDateTime" class="control-label">Match DateTime</label>
-                    <input type="datetime-local" asp-for="MatchDateTime" class="form-control" />
-                    <span asp-validation-for="MatchDateTime" class="text-danger"></span>
+                    <label asp-for="Match_DateTime" class="control-label">Match DateTime</label>
+                    <input type="datetime-local" asp-for="Match_DateTime" class="form-control" />
+                    <span asp-validation-for="Match_DateTime" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -123,6 +131,10 @@
                     <label asp-for="BattingTeam" class="control-label">Batting Team</label>
                     <select id="BattingTeam" asp-for="BattingTeam" class="form-control">
                         <option>Select</option>
+                        @foreach (var team in ViewBag.Teams)
+                        {
+                            <option value="@team.TeamID">@team.TeamName</option>
+                        }
                     </select>
                     <span asp-validation-for="BattingTeam" class="text-danger"></span>
                 </div>
@@ -156,6 +168,9 @@
             }
         });
     });
+
+
+
 </script>
 
 @{
