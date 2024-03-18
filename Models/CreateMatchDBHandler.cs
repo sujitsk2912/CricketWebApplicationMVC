@@ -16,30 +16,29 @@ namespace CricketWebApplicationMVC.Models
             con = new SqlConnection(connection);
         }
 
-        public List<CreateMatchModel> GetTeams()
+        public List<AddTeamModel> GetTeams()
         {
-            List<CreateMatchModel> li = new List<CreateMatchModel>();
+            List<AddTeamModel> teams = new List<AddTeamModel>(); 
             Connection();
             con.Open();
-            string Query = "select TeamID, TeamName, TeamLogo from Teams";
+            string Query = "select TeamID, TeamName, TeamLogo from AddTeams";
             SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
             DataSet ds = new DataSet();
             adapter.Fill(ds, "TeamsDs");
 
             foreach (DataRow dr in ds.Tables["TeamsDs"].Rows)
             {
-                li.Add(new CreateMatchModel
-                {
-                    TeamID = Convert.ToInt32(dr["TeamID"]),
-                    TeamName = dr["TeamName"].ToString(),
-                    TeamLogo = dr["TeamLogo"].ToString(), // Only filename
-                });
+                AddTeamModel team = new AddTeamModel();
+                team.TeamID = Convert.ToInt32(dr["TeamID"]);
+                team.TeamName = dr["TeamName"].ToString();
+                team.TeamLogo = dr["TeamLogo"].ToString(); // Assuming TeamLogo is the file name
+
+                teams.Add(team);
             }
 
-            return li;
+            con.Close(); // Close the connection when done
+
+            return teams;
         }
-
-
-
     }
 }

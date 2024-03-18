@@ -21,13 +21,8 @@ namespace CricketWebApplicationMVC.Controllers
         public IActionResult CreateMatch()
         {
             CreateMatchDBHandler dbHandler = new CreateMatchDBHandler();
-            List<CreateMatchModel> teams = dbHandler.GetTeams();
+            List<AddTeamModel> teams = dbHandler.GetTeams();
             ViewBag.Teams = teams;
-
-            // Get initial logo for Team A
-            CreateMatchModel firstTeam = teams.FirstOrDefault();
-            ViewBag.InitialTeamLogo = firstTeam?.TeamLogo;
-
             return View();
         }
 

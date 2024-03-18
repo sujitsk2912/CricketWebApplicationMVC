@@ -84,7 +84,7 @@
         var teamId = $('#teamIdInput').val();
         if (teamId.trim() !== '') {
             // Construct the URL with the team ID
-            var url = 'https://localhost:7072/ManageTeam/ManageTeam?TeamID=' + teamId;
+            var url = 'https://localhost:7072/AddTeam/ManageTeam?TeamID=' + teamId;
 
             // Set the location to the constructed URL
             window.location = url;

@@ -43,7 +43,7 @@ namespace CricketWebApplicationMVC.Models
             List<AddTeamModel> li = new List<AddTeamModel>();
             Connection();
             con.Open();
-            string Query = "select * from Teams";
+            string Query = "select * from AddTeams";
             SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
             DataSet ds = new DataSet();
             adapter.Fill(ds, "TeamsDs");
@@ -77,7 +77,7 @@ namespace CricketWebApplicationMVC.Models
             Connection();
             con.Open();
 
-            string Query = "Update Teams set TeamName = @TeamName, Player1 = @Player1, Player2 = @Player2, Player3 = @Player3, Player4 = @Player4, Player5 = @Player5, Player6 = @Player6, Player7 = @Player7, Player8 = @Player8, Player9 = @Player9, Player10 = @Player10, Player11 = @Player11";
+            string Query = "Update AddTeams set TeamName = @TeamName, Player1 = @Player1, Player2 = @Player2, Player3 = @Player3, Player4 = @Player4, Player5 = @Player5, Player6 = @Player6, Player7 = @Player7, Player8 = @Player8, Player9 = @Player9, Player10 = @Player10, Player11 = @Player11";
 
             if (iList.TeamLogo != null)
             {

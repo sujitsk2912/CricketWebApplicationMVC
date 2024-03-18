@@ -6,17 +6,11 @@
 
 <style>
 
-    /* .control-label {
-            font-weight:500;
-            padding:3px;
-        } */
     .row {
         place-content: center;
         padding: 5px;
     }
-    /*   .col-md-4{
-            padding:10px;
-        } */
+    
     form {
         border-radius: 10px;
         padding: 15px;
@@ -47,16 +41,16 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label asp-for="TeamName" class="control-label">Team A</label>
-                    <select id="TeamName" asp-for="TeamName" class="form-control">
+                    <label asp-for="TeamA_Name" class="control-label">Team A</label>
+                    <select id="TeamA_Name" asp-for="TeamA_Name" class="form-control">
                         <option>Select</option>
                         @foreach (var team in ViewBag.Teams)
                         {
-                            <option value="@team.TeamID">@team.TeamName</option>
+                            <option value="@team.TeamID">@team.TeamA_Name</option>
                         }
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img id="teamLogo" class="TeamLogo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamLogo)" />
+                        <img id="TeamA_Logo" class="TeamA_Logo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamA_Logo)" />
                     </div>
                 </div>
             </div>
@@ -68,17 +62,17 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label asp-for="TeamName" class="control-label">Team B</label>
-                    <select id="TeamName" asp-for="TeamName" class="form-control">
+                    <label asp-for="TeamB_Name" class="control-label">Team B</label>
+                    <select id="TeamB_Name" asp-for="TeamB_Name" class="form-control">
                         <option>Select</option>
                         @foreach (var team in ViewBag.Teams)
                         {
-                            <option value="@team.TeamID">@team.TeamName</option>
+                            <option value="@team.TeamID">@team.TeamB_Name</option>
                         }
-                        <span asp-validation-for="TeamName" class="text-danger"></span>
+                        <span asp-validation-for="TeamB_Name" class="text-danger"></span>
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img class="TeamLogo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamLogo)" />
+                        <img class="TeamLogo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamB_Logo)" />
                     </div>
                 </div>
             </div>

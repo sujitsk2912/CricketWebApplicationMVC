@@ -24,7 +24,7 @@ namespace CricketWebApplicationMVC.Models
                 con.Open();
 
                 // INSERT query for adding a new team
-                string Query = @"INSERT INTO Teams (TeamName, TeamLogo, Player1, Player2, Player3, Player4, Player5, Player6, Player7, Player8, Player9, Player10, Player11)
+                string Query = @"INSERT INTO AddTeams (TeamName, TeamLogo, Player1, Player2, Player3, Player4, Player5, Player6, Player7, Player8, Player9, Player10, Player11)
                  VALUES (@TeamName, @TeamLogo, @Player1, @Player2, @Player3, @Player4, @Player5, @Player6, @Player7, @Player8, @Player9, @Player10, @Player11)";
 
                 SqlCommand cmd = new SqlCommand(Query, con);
@@ -87,7 +87,7 @@ namespace CricketWebApplicationMVC.Models
             List<AddTeamModel> li = new List<AddTeamModel>();
             Connection();
             con.Open();
-            string Query = "select * from Teams";
+            string Query = "select * from AddTeams";
             SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
             DataSet ds = new DataSet();
             adapter.Fill(ds, "TeamsDs");
@@ -194,7 +194,7 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-            string Query = "delete from Teams where TeamID = '" + TeamID + "'";
+            string Query = "delete from AddTeams where TeamID = '" + TeamID + "'";
             SqlCommand cmd = new SqlCommand(Query, con);
             int res = cmd.ExecuteNonQuery();
 
