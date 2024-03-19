@@ -64,7 +64,7 @@
                 <td>@item.Player10</td>
                 <td>@item.Player11</td>
                 <td>
-                    <a href="@Url.Action("ManageTeam", "ManageTeam", new { TeamID = item.TeamID })">Edit</a>
+                    <a href="@Url.Action("ManageTeam", new { TeamID = item.TeamID })">Edit</a>
                     <a href="@Url.Action("Details", new { TeamID = item.TeamID })">Details</a>
                     <a href="@Url.Action("Delete", new { TeamID = item.TeamID })">Delete</a>
                 </td>

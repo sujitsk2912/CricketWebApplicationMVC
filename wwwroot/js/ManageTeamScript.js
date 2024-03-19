@@ -74,22 +74,4 @@
         });
         return isAdded;
     }
-
-    $(document).on('click', '.clear-input', function () {
-        const inputField = $(this).closest('.input-group').find('input');
-        inputField.val(''); // Clear the input field
-    });
-
-    $('#enterButton').on('click', function () {
-        var teamId = $('#teamIdInput').val();
-        if (teamId.trim() !== '') {
-            // Construct the URL with the team ID
-            var url = 'https://localhost:7072/AddTeam/ManageTeam?TeamID=' + teamId;
-
-            // Set the location to the constructed URL
-            window.location = url;
-        } else {
-            alert("Please enter a valid team ID");
-        }
-    });
 });

@@ -146,50 +146,6 @@ namespace CricketWebApplicationMVC.Models
             return li;
         }
 
-        /* public bool UpdateRecord(AddPlayerModel iList)
-         {
-             Connection();
-             con.Open();
-
-             string Query = "Update PlayerDetails set PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole, Team = @Team";
-
-             // Check if a new image file is selected
-             if (iList.PlayerImg != null)
-             {
-                 Query += ", PlayerImg = @PlayerImg";
-             }
-
-             Query += " where PlayerID = @PlayerID";
-
-             SqlCommand cmd = new SqlCommand(Query, con);
-             cmd.Parameters.AddWithValue("@PlayerName", iList.PlayerName);
-             cmd.Parameters.AddWithValue("@Born", iList.Born);
-             cmd.Parameters.AddWithValue("@City", iList.City);
-             cmd.Parameters.AddWithValue("@Age", iList.Age);
-             cmd.Parameters.AddWithValue("@BattingStyle", iList.BattingStyle);
-             cmd.Parameters.AddWithValue("@BowlingStyle", iList.BowlingStyle);
-             cmd.Parameters.AddWithValue("@PlayingRole", iList.PlayingRole);
-             cmd.Parameters.AddWithValue("@Team", iList.Team);
-             cmd.Parameters.AddWithValue("@PlayerID", iList.PlayerID);
-
-             if (iList.PlayerImg != null)
-             {
-                 cmd.Parameters.AddWithValue("@PlayerImg", iList.PlayerImg);
-             }
-
-             int res = cmd.ExecuteNonQuery();
-             con.Close();
-
-             if (res > 0)
-             {
-                 return true;
-             }
-             else
-             {
-                 return false;
-             }
-         } */
-
         public bool DeleteRecord(int TeamID)
         {
             Connection();
@@ -207,5 +163,7 @@ namespace CricketWebApplicationMVC.Models
                 return false;
             }
         }
+
+       
     }
 }

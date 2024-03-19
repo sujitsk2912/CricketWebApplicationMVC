@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 using CricketWebApplicationMVC.Models;
 
 namespace CricketWebApplicationMVC.Controllers
@@ -23,11 +25,60 @@ namespace CricketWebApplicationMVC.Controllers
             return View(dBHandler.GetRecords());
         }
 
+        [HttpGet]
         public IActionResult ManageTeam(int TeamID)
         {
             ManageTeamDBHandler dbHandler = new ManageTeamDBHandler();
             var Team = dbHandler.GetRecords().Find(get => get.TeamID == TeamID);
             return View(Team);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageTeam(int TeamID, AddTeamModel iList, IFormFile UploadFile)
+        {
+            try
+            {
+                if (UploadFile != null && UploadFile.Length > 0)
+                {
+                    string filename = Path.GetFileName(UploadFile.FileName);
+                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
+
+                    if (!Directory.Exists(uploadFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadFolderPath);
+                    }
+
+                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
+                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
+                    {
+                        await UploadFile.CopyToAsync(stream);
+                    }
+
+                    iList.TeamLogo = filename;
+                }
+
+                ManageTeamDBHandler dBHandler = new ManageTeamDBHandler();
+
+                dBHandler.GetRecords().Find(getDetails => getDetails.TeamID == TeamID);
+
+                if (dBHandler.UpdateRecord(iList))
+                {
+                    TempData["AlertMessage"] = "Record Edited Successfully";
+                    ModelState.Clear();
+                    return RedirectToAction("ManageTeam");
+                }
+                else
+                {
+                    TempData["AlertMessage"] = "Incorrect Team ID";
+                    ModelState.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Error: " + ex.Message;
+            }
+
+            return View(iList);
         }
 
         [HttpGet]
@@ -41,6 +92,17 @@ namespace CricketWebApplicationMVC.Controllers
         {
             try
             {
+                /*  if (ModelState.IsValid)
+                  {
+                      bool teamExists = CheckTeamExists(team.TeamName);
+
+                      if (teamExists)
+                      {
+                          TempData["AlertMessage"] = "Team with the same name already exists.";
+                          return RedirectToAction("AddTeam");
+                      }
+                      else
+                      {*/
                 if (UploadImg != null && UploadImg.Length > 0)
                 {
                     // Handle file upload
@@ -81,6 +143,24 @@ namespace CricketWebApplicationMVC.Controllers
             return View(team);
         }
 
+       /* private bool CheckTeamExists(string teamName)
+        {
+            string connection = "Data Source = LAPTOP-CNVSH31R\\SQLEXPRESS01; Integrated Security=True; Database = Cricket_App";
+            SqlConnection con = new SqlConnection(connection);
+          
+            string query = "SELECT COUNT(*) FROM AddTeams WHERE TeamName = @TeamName";
+
+            int count;
+
+            using (SqlCommand command = new SqlCommand(query, con))
+            {
+                command.Parameters.AddWithValue("@TeamName", teamName);
+                count = (int)command.ExecuteScalar();
+            }
+
+            return count > 0;
+        }*/
+
         [HttpGet]
         public JsonResult GetPlayerSuggestions(string query)
         {
@@ -106,57 +186,6 @@ namespace CricketWebApplicationMVC.Controllers
             TeamDBHandler dBHandler = new TeamDBHandler();
             dBHandler.DeleteRecord(TeamID);
             return RedirectToAction("Index");
-        }
-
-      
-
-        [HttpPost]
-        public async Task<IActionResult> ManageTeam(int TeamID, AddTeamModel iList, IFormFile UploadFile)
-        {
-            try
-            {
-                if (UploadFile != null && UploadFile.Length > 0)
-                {
-                    string filename = Path.GetFileName(UploadFile.FileName);
-                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
-
-                    if (!Directory.Exists(uploadFolderPath))
-                    {
-                        Directory.CreateDirectory(uploadFolderPath);
-                    }
-
-                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
-                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
-                    {
-                        await UploadFile.CopyToAsync(stream);
-                    }
-
-                    iList.TeamLogo = filename;
-                }
-
-                ManageTeamDBHandler dBHandler = new ManageTeamDBHandler();
-
-                var getdata = dBHandler.GetRecords().Find(getDetails => getDetails.TeamID == TeamID);
-
-                if (dBHandler.UpdateRecord(iList))
-                {
-                    TempData["AlertMessage"] = "Record Edited Successfully";
-                    ModelState.Clear();
-                    return RedirectToAction("ManageTeam");
-                }
-                else
-                {
-                    TempData["AlertMessage"] = "Incorrect Team ID";
-                    ModelState.Clear();
-                }
-                return View(getdata);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = "Error: " + ex.Message;
-            }
-
-            return View(iList);
         }
     }
 }

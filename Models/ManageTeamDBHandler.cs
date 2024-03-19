@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CricketWebApplicationMVC.Models
@@ -74,6 +75,7 @@ namespace CricketWebApplicationMVC.Models
 
         public bool UpdateRecord(AddTeamModel iList)
         {
+
             Connection();
             con.Open();
 
@@ -118,6 +120,5 @@ namespace CricketWebApplicationMVC.Models
                 return false;
             }
         }
-
     }
 }
