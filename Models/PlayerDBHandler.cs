@@ -73,7 +73,7 @@ namespace CricketWebApplicationMVC.Models
                     PlayerImg = dr["PlayerImg"].ToString()
                 });
             }
-
+            con.Close();
             return li;
         }
 

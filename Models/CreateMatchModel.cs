@@ -1,4 +1,6 @@
-﻿namespace CricketWebApplicationMVC.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace CricketWebApplicationMVC.Models
 {
     public class CreateMatchModel
     {
@@ -10,7 +12,8 @@
         public string TeamA_Logo { get; set; }
         public string TeamB_Logo { get; set; }
         public string Match_DateTime { get; set; }
-        public string MatchType { get; set;}
+        public string Venue { get; set; }
+        public string MatchType { get; set; }
         public string BattingTeam { get; set; }
         public string BowlingTeam { get; set; }
     }

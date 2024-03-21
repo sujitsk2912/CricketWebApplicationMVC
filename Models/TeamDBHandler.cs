@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Imaging;
 
 namespace CricketWebApplicationMVC.Models
 {
@@ -22,6 +23,17 @@ namespace CricketWebApplicationMVC.Models
             {
                 Connection();
                 con.Open();
+
+                string checkQuery = "SELECT COUNT(*) FROM AddTeams WHERE TeamName = @TeamName";
+                SqlCommand checkCmd = new SqlCommand(checkQuery, con);
+                checkCmd.Parameters.AddWithValue("@TeamName", team.TeamName);
+                int existingCount = (int)checkCmd.ExecuteScalar();
+
+                if (existingCount > 0)
+                {
+                    con.Close();
+                    return false; // Team already exists, return false
+                }
 
                 // INSERT query for adding a new team
                 string Query = @"INSERT INTO AddTeams (TeamName, TeamLogo, Player1, Player2, Player3, Player4, Player5, Player6, Player7, Player8, Player9, Player10, Player11)
@@ -44,12 +56,11 @@ namespace CricketWebApplicationMVC.Models
                 cmd.Parameters.AddWithValue("@Player10", team.Player10);
                 cmd.Parameters.AddWithValue("@Player11", team.Player11);
 
-                // Execute the query
                 int rowsAffected = cmd.ExecuteNonQuery();
 
                 con.Close();
 
-                return rowsAffected > 0; // Return true if at least one row is affected
+                return rowsAffected > 0;
             }
             catch (Exception ex)
             {
@@ -164,6 +175,52 @@ namespace CricketWebApplicationMVC.Models
             }
         }
 
-       
+        public bool UpdateRecord(AddTeamModel iList)
+        {
+
+            Connection();
+            con.Open();
+
+            string Query = "Update AddTeams set TeamName = @TeamName, Player1 = @Player1, Player2 = @Player2, Player3 = @Player3, Player4 = @Player4, Player5 = @Player5, Player6 = @Player6, Player7 = @Player7, Player8 = @Player8, Player9 = @Player9, Player10 = @Player10, Player11 = @Player11";
+
+            if (iList.TeamLogo != null)
+            {
+                Query += ", TeamLogo = @TeamLogo";
+            }
+
+            Query += " where TeamID = @TeamID";
+
+            SqlCommand cmd = new SqlCommand(Query, con);
+            cmd.Parameters.AddWithValue("@TeamName", iList.TeamName);
+            cmd.Parameters.AddWithValue("@Player1", iList.Player1);
+            cmd.Parameters.AddWithValue("@Player2", iList.Player2);
+            cmd.Parameters.AddWithValue("@Player3", iList.Player3);
+            cmd.Parameters.AddWithValue("@Player4", iList.Player4);
+            cmd.Parameters.AddWithValue("@Player5", iList.Player5);
+            cmd.Parameters.AddWithValue("@Player6", iList.Player6);
+            cmd.Parameters.AddWithValue("@Player7", iList.Player7);
+            cmd.Parameters.AddWithValue("@Player8", iList.Player8);
+            cmd.Parameters.AddWithValue("@Player9", iList.Player9);
+            cmd.Parameters.AddWithValue("@Player10", iList.Player10);
+            cmd.Parameters.AddWithValue("@Player11", iList.Player11);
+            cmd.Parameters.AddWithValue("@TeamID", iList.TeamID);
+
+            if (iList.TeamLogo != null)
+            {
+                cmd.Parameters.AddWithValue("@TeamLogo", iList.TeamLogo);
+            }
+
+            int res = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (res > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

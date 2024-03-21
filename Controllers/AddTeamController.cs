@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
 using CricketWebApplicationMVC.Models;
 
 namespace CricketWebApplicationMVC.Controllers
@@ -25,10 +22,65 @@ namespace CricketWebApplicationMVC.Controllers
             return View(dBHandler.GetRecords());
         }
 
+        public IActionResult AddTeam()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTeam(AddTeamModel team, IFormFile UploadImg)
+        {
+            try
+            {
+                if (UploadImg != null && UploadImg.Length > 0)
+                {
+                    // Handle file upload
+                    string filename = Path.GetFileName(UploadImg.FileName);
+                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
+
+                    if (!Directory.Exists(uploadFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadFolderPath);
+                    }
+
+                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
+                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
+                    {
+                        await UploadImg.CopyToAsync(stream);
+                    }
+
+                    team.TeamLogo = filename;
+
+                    TeamDBHandler dBHandler = new TeamDBHandler();
+                    if (dBHandler.AddTeam(team))
+                    {
+                        TempData["AlertMessage"] = "Team Added Successfully";
+                        ModelState.Clear();
+                        return RedirectToAction("AddTeam");
+                    }
+                    else
+                    {
+                        TempData["AlertMessage"] = "Team Already Added";
+                        ModelState.Clear();
+                    }
+                }
+                else
+                {
+                    TempData["AlertMessage"] = "Please select a file.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["AlertMessage"] = "Error: " + ex.Message;
+            }
+
+            return View(team);
+        }
+
         [HttpGet]
         public IActionResult ManageTeam(int TeamID)
         {
-            ManageTeamDBHandler dbHandler = new ManageTeamDBHandler();
+            TeamDBHandler dbHandler = new TeamDBHandler();
             var Team = dbHandler.GetRecords().Find(get => get.TeamID == TeamID);
             return View(Team);
         }
@@ -57,9 +109,7 @@ namespace CricketWebApplicationMVC.Controllers
                     iList.TeamLogo = filename;
                 }
 
-                ManageTeamDBHandler dBHandler = new ManageTeamDBHandler();
-
-                dBHandler.GetRecords().Find(getDetails => getDetails.TeamID == TeamID);
+                TeamDBHandler dBHandler = new TeamDBHandler();
 
                 if (dBHandler.UpdateRecord(iList))
                 {
@@ -69,8 +119,7 @@ namespace CricketWebApplicationMVC.Controllers
                 }
                 else
                 {
-                    TempData["AlertMessage"] = "Incorrect Team ID";
-                    ModelState.Clear();
+                    TempData["AlertMessage"] = "This Team Already Exist";
                 }
             }
             catch (Exception ex)
@@ -81,85 +130,6 @@ namespace CricketWebApplicationMVC.Controllers
             return View(iList);
         }
 
-        [HttpGet]
-        public IActionResult AddTeam()
-        {
-            return View(); //new AddTeamModel()
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddTeam(AddTeamModel team, IFormFile UploadImg)
-        {
-            try
-            {
-                /*  if (ModelState.IsValid)
-                  {
-                      bool teamExists = CheckTeamExists(team.TeamName);
-
-                      if (teamExists)
-                      {
-                          TempData["AlertMessage"] = "Team with the same name already exists.";
-                          return RedirectToAction("AddTeam");
-                      }
-                      else
-                      {*/
-                if (UploadImg != null && UploadImg.Length > 0)
-                {
-                    // Handle file upload
-                    string filename = Path.GetFileName(UploadImg.FileName);
-                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
-
-                    if (!Directory.Exists(uploadFolderPath))
-                    {
-                        Directory.CreateDirectory(uploadFolderPath);
-                    }
-
-                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
-                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
-                    {
-                        await UploadImg.CopyToAsync(stream);
-                    }
-
-                    team.TeamLogo = filename;
-
-                    TeamDBHandler dBHandler = new TeamDBHandler();
-                    if (dBHandler.AddTeam(team))
-                    {
-                        TempData["AlertMessage"] = "Team Added Successfully";
-                        ModelState.Clear();
-                        return RedirectToAction("AddTeam");
-                    }
-                }
-                else
-                {
-                    TempData["AlertMessage"] = "Please select a file.";
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["AlertMessage"] = "Error: " + ex.Message;
-            }
-
-            return View(team);
-        }
-
-       /* private bool CheckTeamExists(string teamName)
-        {
-            string connection = "Data Source = LAPTOP-CNVSH31R\\SQLEXPRESS01; Integrated Security=True; Database = Cricket_App";
-            SqlConnection con = new SqlConnection(connection);
-          
-            string query = "SELECT COUNT(*) FROM AddTeams WHERE TeamName = @TeamName";
-
-            int count;
-
-            using (SqlCommand command = new SqlCommand(query, con))
-            {
-                command.Parameters.AddWithValue("@TeamName", teamName);
-                count = (int)command.ExecuteScalar();
-            }
-
-            return count > 0;
-        }*/
 
         [HttpGet]
         public JsonResult GetPlayerSuggestions(string query)

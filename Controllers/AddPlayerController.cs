@@ -110,8 +110,16 @@ namespace CricketWebApplicationMVC.Controllers
                 }
 
                 PlayerDBHandler dBHandler = new PlayerDBHandler();
-                dBHandler.UpdateRecord(iList);
-                return RedirectToAction("Index");
+                if (dBHandler.UpdateRecord(iList))
+                {
+                    TempData["AlertMessage"] = "Record Edited Successfully";
+                    ModelState.Clear();
+                    return RedirectToAction("Index");
+                }
+                else 
+                {
+                    TempData["AlertMessage"] = "This Player Already Exist";
+                }
             }
             catch (Exception ex)
             {
@@ -153,7 +161,5 @@ namespace CricketWebApplicationMVC.Controllers
             dBHandler.DeleteRecord(PlayerId);
             return RedirectToAction("Index");
         }
-
-       
     }
 }

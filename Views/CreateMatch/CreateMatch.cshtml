@@ -41,100 +41,109 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label asp-for="TeamA_Name" class="control-label">Team A</label>
-                    <select id="TeamA_Name" asp-for="TeamA_Name" class="form-control">
+                    <label  class="control-label">Team A</label>
+                        <select id="TeamA_Name" asp-for="TeamA_Name" class="form-control">
                         <option>Select</option>
-                        @foreach (var team in ViewBag.Teams)
+                      @*   @foreach (var team in ViewBag.Teams)
                         {
-                            <option value="@team.TeamID">@team.TeamA_Name</option>
-                        }
-                    </select>
+                            <option value="@team.TeamID">@team.TeamName</option>
+                        } *@
+                    </select> 
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img id="TeamA_Logo" class="TeamA_Logo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamA_Logo)" />
+                         <img id="TeamA_Logo" class="TeamLogo" src="~/TeamLogo/@ViewBag.Teams" />
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+             <div class="col-md-2">
                 <br />
                 <div class="form-group" style="border:1px solid #CDD3D9; border-radius:5px; align-items:center; display:flex;justify-content:center">
                   <h5 style="place-items:center;padding-top:10px">V/S</h5>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="TeamB_Name" class="control-label">Team B</label>
                     <select id="TeamB_Name" asp-for="TeamB_Name" class="form-control">
                         <option>Select</option>
-                        @foreach (var team in ViewBag.Teams)
+                     @*    @foreach (var team in ViewBag.Teams)
                         {
-                            <option value="@team.TeamID">@team.TeamB_Name</option>
-                        }
+                            <option value="@team.TeamID">@team.TeamName</option>
+                        } *@
                         <span asp-validation-for="TeamB_Name" class="text-danger"></span>
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img class="TeamLogo" src="~/TeamLogo/@Html.DisplayFor(team => team.TeamB_Logo)" />
+                        <!-- Display team B logo -->
+                        <img id="TeamB_Logo" class="TeamLogo" src="~/TeamLogo/@ViewBag.Teams" />
+  
                     </div>
                 </div>
             </div>
-        </div>
-        <br /><br />
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="Match_DateTime" class="control-label">Match DateTime</label>
-                    <input type="datetime-local" asp-for="Match_DateTime" class="form-control" />
-                    <span asp-validation-for="Match_DateTime" class="text-danger"></span>
+            <br /><br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Match_DateTime" class="control-label">Match DateTime</label>
+                        <input type="datetime-local" asp-for="Match_DateTime" class="form-control" />
+                        <span asp-validation-for="Match_DateTime" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="MatchType" class="control-label">Match Type</label>
-                    <select id="MatchType" asp-for="MatchType" class="form-control">
-                        <option>Select</option>
-                        <option value="test">Test Match</option>
-                        <option value="odi">One Day International (ODI)</option>
-                        <option value="t20">Twenty20 International (T20I)</option>
-                        <option value="domestic-t20">Domestic T20 League</option>
-                        <option value="domestic-odi">Domestic One Day Competition</option>
-                        <option value="first-class">First-Class Cricket</option>
-                        <option value="list-a">List A Match</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <span asp-validation-for="MatchType" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Venue" class="control-label">Venue</label>
+                        <textarea placeholder="Venue of the Match..." asp-for="Venue" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Venue" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <center>
-        <div class="row" id="otherMatchTypeInput" style="display: none;">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="OtherMatchType" class="control-label">Other Match Type</label>
-                    <input type="text" id="OtherMatchType" name="OtherMatchType" class="form-control" />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="MatchType" class="control-label">Match Type</label>
+                        <select id="MatchType" asp-for="MatchType" class="form-control">
+                            <option>Select</option>
+                            <option value="test">Test Match</option>
+                            <option value="odi">One Day International (ODI)</option>
+                            <option value="t20">Twenty20 International (T20I)</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span asp-validation-for="MatchType" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-            </div>
-        </center>
+            <center>
+                <div class="row" id="otherMatchTypeInput" style="display: none;">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="OtherMatchType" class="control-label">Other Match Type</label>
+                            <input type="text" id="OtherMatchType" name="OtherMatchType" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </center>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="BattingTeam" class="control-label">Batting Team</label>
-                    <select id="BattingTeam" asp-for="BattingTeam" class="form-control">
-                        <option>Select</option>
-                        @foreach (var team in ViewBag.Teams)
-                        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="BattingTeam" class="control-label">Batting Team</label>
+                        <select id="BattingTeam" asp-for="BattingTeam" class="form-control">
+                            <option>Select</option>
+                            @* @foreach (var team in ViewBag.Teams)
+                            {
                             <option value="@team.TeamID">@team.TeamName</option>
-                        }
-                    </select>
-                    <span asp-validation-for="BattingTeam" class="text-danger"></span>
+                            } *@
+                        </select>
+                        <span asp-validation-for="BattingTeam" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        
         <br />
         <div class="row">
             <div class="col-md-4">
@@ -142,7 +151,7 @@
                     <input type="submit" value="Start Match" class="btn btn-primary" />
                 </div>
             </div>
-        </div>
+        </div> 
 
     </form>
 
