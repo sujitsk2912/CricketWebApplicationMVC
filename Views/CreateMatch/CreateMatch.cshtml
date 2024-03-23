@@ -1,5 +1,6 @@
 ﻿@model CricketWebApplicationMVC.Models.CreateMatchModel
 
+
 @{
     ViewData["Title"] = "CreateMatch";
 }
@@ -26,6 +27,7 @@
         background-size: cover;
         height: 150px;
         border-radius: 5px;
+        /* border:1px solid #D0D0D0; */
     }
 </style>
 
@@ -41,44 +43,44 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label  class="control-label">Team A</label>
-                        <select id="TeamA_Name" asp-for="TeamA_Name" class="form-control">
+                    <label asp-for="TeamA_ID" class="control-label">Team A</label>
+                    <select asp-for="TeamA_ID" id="TeamA_Name" class="form-control">
                         <option>Select</option>
-                      @*   @foreach (var team in ViewBag.Teams)
+                        @foreach (var team in ViewBag.Teams)
                         {
                             <option value="@team.TeamID">@team.TeamName</option>
-                        } *@
-                    </select> 
+                        }
+                    </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                         <img id="TeamA_Logo" class="TeamLogo" src="~/TeamLogo/@ViewBag.Teams" />
+                        <img id="TeamA_Logo" class="TeamLogo" src="~/TeamLogo/" />
                     </div>
                 </div>
             </div>
-             <div class="col-md-2">
+
+            <div class="col-md-2">
                 <br />
                 <div class="form-group" style="border:1px solid #CDD3D9; border-radius:5px; align-items:center; display:flex;justify-content:center">
                   <h5 style="place-items:center;padding-top:10px">V/S</h5>
                 </div>
             </div>
 
-            <div class="col-md-4">
+
+             <div class="col-md-4">
                 <div class="form-group">
-                    <label asp-for="TeamB_Name" class="control-label">Team B</label>
-                    <select id="TeamB_Name" asp-for="TeamB_Name" class="form-control">
+                    <label asp-for="TeamB_ID" class="control-label">Team B</label>
+                    <select asp-for="TeamB_ID" id="TeamB_Name" class="form-control">
                         <option>Select</option>
-                     @*    @foreach (var team in ViewBag.Teams)
+                        @foreach (var team in ViewBag.Teams)
                         {
                             <option value="@team.TeamID">@team.TeamName</option>
-                        } *@
-                        <span asp-validation-for="TeamB_Name" class="text-danger"></span>
+                        }
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <!-- Display team B logo -->
-                        <img id="TeamB_Logo" class="TeamLogo" src="~/TeamLogo/@ViewBag.Teams" />
-  
+                        <img id="TeamB_Logo" class="TeamLogo" src="~/TeamLogo/" />
                     </div>
                 </div>
             </div>
+         
 
             <br /><br />
 
@@ -107,7 +109,7 @@
                     <div class="form-group">
                         <label asp-for="MatchType" class="control-label">Match Type</label>
                         <select id="MatchType" asp-for="MatchType" class="form-control">
-                            <option>Select</option>
+                            <option >Select</option>
                             <option value="test">Test Match</option>
                             <option value="odi">One Day International (ODI)</option>
                             <option value="t20">Twenty20 International (T20I)</option>
@@ -117,64 +119,89 @@
                     </div>
                 </div>
             </div>
-            <center>
-                <div class="row" id="otherMatchTypeInput" style="display: none;">
+           
+            <div id="otherMatchTypeInput" style="display: none;">
+                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="OtherMatchType" class="control-label">Other Match Type</label>
+                            <label class="control-label">Other Match Type</label>
                             <input type="text" id="OtherMatchType" name="OtherMatchType" class="form-control" />
                         </div>
                     </div>
                 </div>
-            </center>
+            </div>
 
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label asp-for="BattingTeam" class="control-label">Batting Team</label>
-                        <select id="BattingTeam" asp-for="BattingTeam" class="form-control">
-                            <option>Select</option>
-                            @* @foreach (var team in ViewBag.Teams)
-                            {
-                            <option value="@team.TeamID">@team.TeamName</option>
-                            } *@
-                        </select>
-                        <span asp-validation-for="BattingTeam" class="text-danger"></span>
+                        <label asp-for="Status" class="control-label">Status</label>
+                        <select id="Status" asp-for="Status" class="form-control">
+                            <option >Select</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="upcoming">Upcoming</option>
+                         </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 </div>
-            </div>
-        
-        <br />
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group" style="display:flex; justify-content:center">
-                    <input type="submit" value="Start Match" class="btn btn-primary" />
+            </div> 
+
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" style="display:flex; justify-content:center">
+                        <input type="submit" value="Create Match" class="btn btn-primary" />
+                    </div>
                 </div>
-            </div>
-        </div> 
+            </div> 
 
+        </div>
     </form>
-
 
 </body>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const matchTypeSelect = document.getElementById("MatchType");
+        const statusSelect = document.getElementById("Status"); // Changed variable name to statusSelect
         const otherMatchTypeInput = document.getElementById("otherMatchTypeInput");
+        const otherMatchType = document.getElementById("OtherMatchType"); // Fixed variable name
+        const teamASelect = document.getElementById("TeamA_Name");
+        const teamBSelect = document.getElementById("TeamB_Name");
+        const submitButton = document.querySelector('input[type="submit"]');
 
         matchTypeSelect.addEventListener("change", function () {
             if (matchTypeSelect.value === "other") {
-                otherMatchTypeInput.style.display = "block"; // Display the textbox for other match type
+                otherMatchTypeInput.style.display = "block";
             } else {
                 otherMatchTypeInput.style.display = "none"; // Hide the textbox for other match type
             }
         });
+
+        submitButton.addEventListener("click", function (event) {
+            if (teamASelect.value !== "Select" && teamBSelect.value !== "Select" && matchTypeSelect.value !== "Select" && statusSelect.value !== "Select") {
+                // Check if Team A and Team B have the same ID
+                if (teamASelect.value === teamBSelect.value) {
+                    alert("Team A and Team B cannot be the same.");
+                    event.preventDefault(); // Prevent form submission
+                }
+                if (matchTypeSelect.value === "other" && otherMatchType.value.trim() === "") {
+                    alert("Please enter a value for Other Match Type.");
+                    event.preventDefault(); // Prevent form submission
+                }
+
+            }
+            else {
+                alert("Please select all required fields.");
+                event.preventDefault(); // Prevent form submission
+            }
+        });
     });
-
-
-
 </script>
+
+
+
+
+
 
 @{
     var alertMessage = TempData["AlertMessage"] as string;

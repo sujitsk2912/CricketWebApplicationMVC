@@ -16,17 +16,36 @@ namespace CricketWebApplicationMVC.Models
             con = new SqlConnection(connection);
         }
 
-        public void GetTeams()
+        public bool Create(CreateMatchModel match)
         {
-         
-            Connection();
-            con.Open();
+            try
+            {
+                Connection();
+                con.Open();
 
-            string query = "Select * from AddTeams";
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
-            
+                string Query = @"INSERT INTO Matches (TeamA_ID, TeamB_ID, Match_DateTime, Venue, MatchType, Status) 
+                                VALUES (@TeamA_ID, @TeamB_ID, @Match_DateTime, @Venue, @MatchType, @Status)";
+
+                SqlCommand cmd = new SqlCommand(Query, con);
+
+                cmd.Parameters.AddWithValue("@TeamA_ID", match.TeamA_ID);
+                cmd.Parameters.AddWithValue("@TeamB_ID", match.TeamB_ID);
+                cmd.Parameters.AddWithValue("@Match_DateTime", match.Match_DateTime);
+                cmd.Parameters.AddWithValue("@Venue", match.Venue);
+                cmd.Parameters.AddWithValue("@MatchType", match.MatchType);
+                cmd.Parameters.AddWithValue("@Status", match.Status);
+               
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                con.Close();
+
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in Create Match: " + ex.Message);
+                return false; 
+            }
         }
     }
 }

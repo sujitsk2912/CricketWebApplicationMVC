@@ -124,6 +124,7 @@ namespace CricketWebApplicationMVC.Models
                 });
             }
 
+            con.Close();
             return li;
         }
 
