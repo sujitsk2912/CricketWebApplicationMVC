@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Imaging;
+using System.Numerics;
 
 namespace CricketWebApplicationMVC.Models
 {
@@ -98,18 +99,20 @@ namespace CricketWebApplicationMVC.Models
             List<AddTeamModel> li = new List<AddTeamModel>();
             Connection();
             con.Open();
-            string Query = "select * from AddTeams";
+            string Query = "SELECT TeamID, TeamName, TeamLogo, Player1, Player2, Player3, Player4, Player5, Player6, Player7, Player8, Player9, Player10, Player11 FROM AddTeams"; 
             SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
             DataSet ds = new DataSet();
             adapter.Fill(ds, "TeamsDs");
 
             foreach (DataRow dr in ds.Tables["TeamsDs"].Rows)
             {
+                byte[] TeamLogoBytes = dr["TeamLogo"] == DBNull.Value ? null : (byte[])dr["TeamLogo"];
                 li.Add(new AddTeamModel
                 {
                     TeamID = Convert.ToInt32(dr["TeamID"]),
                     TeamName = dr["TeamName"].ToString(),
-                    TeamLogo = dr["TeamLogo"].ToString(),
+                    TeamLogo = TeamLogoBytes,
+                    Base64String = Convert.ToBase64String(TeamLogoBytes).ToString(),
                     Player1 = dr["Player1"].ToString(),
                     Player2 = dr["Player2"].ToString(),
                     Player3 = dr["Player3"].ToString(),
@@ -151,7 +154,7 @@ namespace CricketWebApplicationMVC.Models
                     BowlingStyle = dr["BowlingStyle"].ToString(),
                     PlayingRole = dr["PlayingRole"].ToString(),
                     Team = dr["Team"].ToString(),
-                    PlayerImg = dr["PlayerImg"].ToString()
+                    PlayerImg = Convert.FromBase64String(dr["PlayerImg"].ToString())
                 });
             }
 
@@ -178,49 +181,66 @@ namespace CricketWebApplicationMVC.Models
 
         public bool UpdateRecord(AddTeamModel iList)
         {
-
-            Connection();
-            con.Open();
-
-            string Query = "Update AddTeams set TeamName = @TeamName, Player1 = @Player1, Player2 = @Player2, Player3 = @Player3, Player4 = @Player4, Player5 = @Player5, Player6 = @Player6, Player7 = @Player7, Player8 = @Player8, Player9 = @Player9, Player10 = @Player10, Player11 = @Player11";
-
-            if (iList.TeamLogo != null)
+            try
             {
-                Query += ", TeamLogo = @TeamLogo";
+                Connection();
+                con.Open();
+
+                string Query = "Update AddTeams set TeamName = @TeamName, Player1 = @Player1, Player2 = @Player2, Player3 = @Player3, Player4 = @Player4, Player5 = @Player5, Player6 = @Player6, Player7 = @Player7, Player8 = @Player8, Player9 = @Player9, Player10 = @Player10, Player11 = @Player11";
+
+                if (iList.TeamLogo != null)
+                {
+                    Query += ", TeamLogo = @TeamLogo";
+                }
+
+                Query += " where TeamID = @TeamID";
+
+                SqlCommand cmd = new SqlCommand(Query, con);
+                cmd.Parameters.AddWithValue("@TeamName", iList.TeamName);
+                cmd.Parameters.AddWithValue("@Player1", iList.Player1);
+                cmd.Parameters.AddWithValue("@Player2", iList.Player2);
+                cmd.Parameters.AddWithValue("@Player3", iList.Player3);
+                cmd.Parameters.AddWithValue("@Player4", iList.Player4);
+                cmd.Parameters.AddWithValue("@Player5", iList.Player5);
+                cmd.Parameters.AddWithValue("@Player6", iList.Player6);
+                cmd.Parameters.AddWithValue("@Player7", iList.Player7);
+                cmd.Parameters.AddWithValue("@Player8", iList.Player8);
+                cmd.Parameters.AddWithValue("@Player9", iList.Player9);
+                cmd.Parameters.AddWithValue("@Player10", iList.Player10);
+                cmd.Parameters.AddWithValue("@Player11", iList.Player11);
+                cmd.Parameters.AddWithValue("@TeamID", iList.TeamID);
+
+                if (iList.TeamLogo != null)
+                {
+                    if (iList.TeamLogo is byte[])
+                    {
+                        // TeamLogo already contains byte array, use it directly
+                        cmd.Parameters.AddWithValue("@TeamLogo", iList.TeamLogo);
+                    }
+                    else
+                    {
+                        // Handle unexpected TeamLogo type (throw exception or log error)
+                        throw new ArgumentException("Invalid TeamLogo type");
+                    }
+                }
+
+                int res = cmd.ExecuteNonQuery();
+                con.Close();
+
+                return res > 0;
             }
-
-            Query += " where TeamID = @TeamID";
-
-            SqlCommand cmd = new SqlCommand(Query, con);
-            cmd.Parameters.AddWithValue("@TeamName", iList.TeamName);
-            cmd.Parameters.AddWithValue("@Player1", iList.Player1);
-            cmd.Parameters.AddWithValue("@Player2", iList.Player2);
-            cmd.Parameters.AddWithValue("@Player3", iList.Player3);
-            cmd.Parameters.AddWithValue("@Player4", iList.Player4);
-            cmd.Parameters.AddWithValue("@Player5", iList.Player5);
-            cmd.Parameters.AddWithValue("@Player6", iList.Player6);
-            cmd.Parameters.AddWithValue("@Player7", iList.Player7);
-            cmd.Parameters.AddWithValue("@Player8", iList.Player8);
-            cmd.Parameters.AddWithValue("@Player9", iList.Player9);
-            cmd.Parameters.AddWithValue("@Player10", iList.Player10);
-            cmd.Parameters.AddWithValue("@Player11", iList.Player11);
-            cmd.Parameters.AddWithValue("@TeamID", iList.TeamID);
-
-            if (iList.TeamLogo != null)
+            catch (Exception ex)
             {
-                cmd.Parameters.AddWithValue("@TeamLogo", iList.TeamLogo);
-            }
-
-            int res = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (res > 0)
-            {
-                return true;
-            }
-            else
-            {
+                Console.WriteLine("Error updating Team record: " + ex.Message);
                 return false;
+            }
+            finally
+            {
+                // Ensure that the connection is closed even if an exception occurs
+                if (con != null && con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
     }

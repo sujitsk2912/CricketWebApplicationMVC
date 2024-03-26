@@ -24,7 +24,6 @@ namespace CricketWebApplicationMVC.Controllers
             var teams = dbHandler.GetRecords();
             ViewBag.Teams = teams;
             var selectedTeam = teams.FirstOrDefault(team => team.TeamID == TeamID);
-
             return View(selectedTeam); 
         }
 

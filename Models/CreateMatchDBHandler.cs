@@ -23,8 +23,7 @@ namespace CricketWebApplicationMVC.Models
                 Connection();
                 con.Open();
 
-                string Query = @"INSERT INTO Matches (TeamA_ID, TeamB_ID, Match_DateTime, Venue, MatchType, Status) 
-                                VALUES (@TeamA_ID, @TeamB_ID, @Match_DateTime, @Venue, @MatchType, @Status)";
+                string Query = "INSERT INTO Matches (TeamA_ID, TeamB_ID, Match_DateTime, Venue, MatchType, Status) VALUES (@TeamA_ID, @TeamB_ID, @Match_DateTime, @Venue, @MatchType, @Status)";
 
                 SqlCommand cmd = new SqlCommand(Query, con);
 

@@ -50,7 +50,7 @@
                 <td>@item.TeamID</td>
                 <td>@item.TeamName</td>
                 <td class="TeamLogo">
-                    <img src="~/TeamLogo/@item.TeamLogo" alt="Team Image" style="max-width: 100px; max-height: 100px;" />
+                    <img src="data:image;base64,@(Convert.ToBase64String(item.TeamLogo))" alt="Team Image" style="max-width: 100px; max-height: 100px;" />
                 </td>
                 <td>@item.Player1</td>
                 <td>@item.Player2</td>

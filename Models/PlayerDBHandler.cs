@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System;
 namespace CricketWebApplicationMVC.Models
 {
     public class PlayerDBHandler
@@ -16,7 +17,7 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-
+            string encodedImage = Convert.ToBase64String(PList.PlayerImg);
             string checkQuery = "SELECT COUNT(*) FROM PlayerDetails WHERE PlayerName = @PlayerName";
             SqlCommand checkCmd = new SqlCommand(checkQuery, con);
             checkCmd.Parameters.AddWithValue("@PlayerName", PList.PlayerName);
@@ -38,7 +39,7 @@ namespace CricketWebApplicationMVC.Models
             insertCmd.Parameters.AddWithValue("@BowlingStyle", PList.BowlingStyle);
             insertCmd.Parameters.AddWithValue("@PlayingRole", PList.PlayingRole);
             insertCmd.Parameters.AddWithValue("@Team", PList.Team);
-            insertCmd.Parameters.AddWithValue("@PlayerImg", PList.PlayerImg);
+            insertCmd.Parameters.AddWithValue("@PlayerImg", encodedImage);
 
             int res = insertCmd.ExecuteNonQuery();
             con.Close();
@@ -49,79 +50,124 @@ namespace CricketWebApplicationMVC.Models
 
         public List<AddPlayerModel> GetRecords()
         {
-            List<AddPlayerModel> li = new List<AddPlayerModel>();
-            Connection();
-            con.Open();
-            string Query = "select * from PlayerDetails";
-            SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
-            DataSet ds = new DataSet();
-            adapter.Fill(ds, "PlayerDs");
+            List<AddPlayerModel> players = new List<AddPlayerModel>(); // Use descriptive name
 
-            foreach (DataRow dr in ds.Tables["PlayerDs"].Rows)
+            try
             {
-                li.Add(new AddPlayerModel
+                Connection(); // Assuming Connection() method establishes the connection
+                con.Open();
+
+                string query = "SELECT PlayerID, PlayerName, Born, City, Age, BattingStyle, BowlingStyle, PlayingRole, Team, PlayerImg FROM PlayerDetails";  // Specify needed columns
+                SqlDataAdapter adapter = new SqlDataAdapter(query, con);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds, "PlayerDs");
+
+                foreach (DataRow dr in ds.Tables["PlayerDs"].Rows)
                 {
-                    PlayerID = Convert.ToInt32(dr["PlayerID"]),
-                    PlayerName = dr["PlayerName"].ToString(),
-                    Born = dr["Born"].ToString(),
-                    City = dr["City"].ToString(),
-                    Age = Convert.ToInt32(dr["Age"]),
-                    BattingStyle = dr["BattingStyle"].ToString(),
-                    BowlingStyle = dr["BowlingStyle"].ToString(),
-                    PlayingRole = dr["PlayingRole"].ToString(),
-                    Team = dr["Team"].ToString(),
-                    PlayerImg = dr["PlayerImg"].ToString()
-                });
+                    int playerID = Convert.ToInt32(dr["PlayerID"]);
+                    string playerName = dr["PlayerName"].ToString();
+                    string born = dr["Born"].ToString();
+                    string city = dr["City"].ToString();
+                    int age = Convert.ToInt32(dr["Age"]);
+                    string battingStyle = dr["BattingStyle"].ToString();
+                    string bowlingStyle = dr["BowlingStyle"].ToString();
+                    string playingRole = dr["PlayingRole"].ToString();
+                    string team = dr["Team"].ToString();
+
+                    // Check if PlayerImg is not null before casting
+                    byte[] playerImgBytes = dr["PlayerImg"] == DBNull.Value ? null : (byte[])dr["PlayerImg"];
+
+                    players.Add(new AddPlayerModel
+                    {
+                        PlayerID = playerID,
+                        PlayerName = playerName,
+                        Born = born,
+                        City = city,
+                        Age = age,
+                        BattingStyle = battingStyle,
+                        BowlingStyle = bowlingStyle,
+                        PlayingRole = playingRole,
+                        Team = team,
+                        PlayerImg = playerImgBytes
+                    });
+                }
             }
-            con.Close();
-            return li;
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately (e.g., logging, throwing to caller)
+                Console.WriteLine("Error getting player records: " + ex.Message);
+            }
+            finally
+            {
+                if (con != null && con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+
+            return players;
         }
 
 
-
-        public bool UpdateRecord(AddPlayerModel iList)
+        public bool UpdateRecord(AddPlayerModel player)  // Use a singular name for consistency
         {
-            Connection();
-            con.Open();
-
-            string Query = "Update PlayerDetails set PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole, Team = @Team";
-
-            // Check if a new image file is selected
-            if (iList.PlayerImg != null)
+            try
             {
-                Query += ", PlayerImg = @PlayerImg";
+                Connection(); // Assuming Connection() method establishes the connection
+                con.Open();
+
+                string query = "UPDATE PlayerDetails SET PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole, Team = @Team";
+
+                if (player.PlayerImg != null)
+                {
+                    query += ", PlayerImg = @PlayerImg";
+                }
+
+                query += " WHERE PlayerID = @PlayerID";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@PlayerName", player.PlayerName);
+                cmd.Parameters.AddWithValue("@Born", player.Born);
+                cmd.Parameters.AddWithValue("@City", player.City);
+                cmd.Parameters.AddWithValue("@Age", player.Age);
+                cmd.Parameters.AddWithValue("@BattingStyle", player.BattingStyle);
+                cmd.Parameters.AddWithValue("@BowlingStyle", player.BowlingStyle);
+                cmd.Parameters.AddWithValue("@PlayingRole", player.PlayingRole);
+                cmd.Parameters.AddWithValue("@Team", player.Team);
+                cmd.Parameters.AddWithValue("@PlayerID", player.PlayerID);
+
+                if (player.PlayerImg != null)
+                {
+                    if (player.PlayerImg is byte[])
+                    {
+                        // PlayerImg already contains byte array, use it directly
+                        cmd.Parameters.AddWithValue("@PlayerImg", player.PlayerImg);
+                    }
+                    else
+                    {
+                        // Handle unexpected PlayerImg type (throw exception or log error)
+                        throw new ArgumentException("Invalid PlayerImg type");
+                    }
+                }
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected > 0;
             }
-
-            Query += " where PlayerID = @PlayerID";
-
-            SqlCommand cmd = new SqlCommand(Query, con);
-            cmd.Parameters.AddWithValue("@PlayerName", iList.PlayerName);
-            cmd.Parameters.AddWithValue("@Born", iList.Born);
-            cmd.Parameters.AddWithValue("@City", iList.City);
-            cmd.Parameters.AddWithValue("@Age", iList.Age);
-            cmd.Parameters.AddWithValue("@BattingStyle", iList.BattingStyle);
-            cmd.Parameters.AddWithValue("@BowlingStyle", iList.BowlingStyle);
-            cmd.Parameters.AddWithValue("@PlayingRole", iList.PlayingRole);
-            cmd.Parameters.AddWithValue("@Team", iList.Team);
-            cmd.Parameters.AddWithValue("@PlayerID", iList.PlayerID);
-
-            if (iList.PlayerImg != null)
+            catch (Exception ex)
             {
-                cmd.Parameters.AddWithValue("@PlayerImg", iList.PlayerImg);
-            }
-
-            int res = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (res > 0)
-            {
-                return true;
-            }
-            else
-            {
+                // Handle exceptions appropriately (e.g., logging, throwing to caller)
+                Console.WriteLine("Error updating player record: " + ex.Message);
                 return false;
             }
+            finally
+            {
+                if (con != null && con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
         }
+
 
 
         public bool DeleteRecord(int PlayerId)

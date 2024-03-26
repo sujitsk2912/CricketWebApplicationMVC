@@ -6,7 +6,9 @@ namespace CricketWebApplicationMVC.Models
     {
         public int TeamID { get; set; }
         public string TeamName { get; set; }
-        public string TeamLogo { get; set; }
+        public byte[] TeamLogo { get; set; }
+
+        public string Base64String { get; set; }
         public string Player1 {  get; set; }
         public string Player2 {  get; set; }
         public string Player3 {  get; set; }

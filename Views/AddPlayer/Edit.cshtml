@@ -39,7 +39,7 @@
         <div class="col-md-4" style="display:flex;flex-direction:column;padding:20px">
 
             <div class="row">
-                <img id="blah" class="PlayerImg" style="width:250px" src="/PlayerImg/@Html.DisplayFor(model => model.PlayerImg)" />
+                <img id="blah" class="PlayerImg" style="width:250px" src="data:image;base64,@(Convert.ToBase64String(Model.PlayerImg))" />
             </div><br />
             <div class="row">
                 <div class="form-group">
@@ -193,9 +193,9 @@
 
 @if (!string.IsNullOrEmpty(alertMessage))
 {
-    <script>
+   @*  <script>
         alert('@alertMessage');
-    </script>
+    </script> *@
 }
 
 <script>
@@ -208,11 +208,11 @@
     }
 </script>
 
-@* <script>
+<script>
    function saveEdit(){
        alert("Record Edited Successfully");
    }
-</script> *@
+</script>
 
 
 

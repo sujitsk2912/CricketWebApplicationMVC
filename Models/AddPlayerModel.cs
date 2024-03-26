@@ -13,7 +13,7 @@ namespace CricketWebApplicationMVC.Models
         public string BowlingStyle { get; set; }
         public string PlayingRole { get; set; }
         public string Team { get; set; }
-        public string PlayerImg { get; set; }
+        public byte[] PlayerImg { get; set; }
 
     }
 }

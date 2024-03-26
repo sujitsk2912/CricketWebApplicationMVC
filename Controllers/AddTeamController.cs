@@ -34,22 +34,15 @@ namespace CricketWebApplicationMVC.Controllers
             {
                 if (UploadImg != null && UploadImg.Length > 0)
                 {
-                    // Handle file upload
-                    string filename = Path.GetFileName(UploadImg.FileName);
-                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
+                    byte[] buffer;
 
-                    if (!Directory.Exists(uploadFolderPath))
+                    using (var memoryStream = new MemoryStream())
                     {
-                        Directory.CreateDirectory(uploadFolderPath);
+                        UploadImg.CopyTo(memoryStream);
+                        buffer = memoryStream.ToArray();
                     }
 
-                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
-                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
-                    {
-                        await UploadImg.CopyToAsync(stream);
-                    }
-
-                    team.TeamLogo = filename;
+                    team.TeamLogo = buffer;
 
                     TeamDBHandler dBHandler = new TeamDBHandler();
                     if (dBHandler.AddTeam(team))
@@ -92,21 +85,15 @@ namespace CricketWebApplicationMVC.Controllers
             {
                 if (UploadFile != null && UploadFile.Length > 0)
                 {
-                    string filename = Path.GetFileName(UploadFile.FileName);
-                    string uploadFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "TeamLogo");
+                    byte[] buffer;
 
-                    if (!Directory.Exists(uploadFolderPath))
+                    using (var memoryStream = new MemoryStream())
                     {
-                        Directory.CreateDirectory(uploadFolderPath);
+                        UploadFile.CopyTo(memoryStream);
+                        buffer = memoryStream.ToArray();
                     }
 
-                    string uploadFilePath = Path.Combine(uploadFolderPath, filename);
-                    using (var stream = new FileStream(uploadFilePath, FileMode.Create))
-                    {
-                        await UploadFile.CopyToAsync(stream);
-                    }
-
-                    iList.TeamLogo = filename;
+                    iList.TeamLogo = buffer;
                 }
 
                 TeamDBHandler dBHandler = new TeamDBHandler();

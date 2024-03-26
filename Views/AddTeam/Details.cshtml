@@ -39,7 +39,7 @@
     <dl class="row">
         <div class="col-md-4" style="display:flex;justify-content:center;place-items:center">
             <dd>
-                <img class="TeamLogo" style="height:180px" src="/TeamLogo/@Html.DisplayFor(model => model.TeamLogo)" />
+                <img class="TeamLogo" style="height:180px" src="data:image;base64,@(Convert.ToBase64String(Model.TeamLogo))" />
             </dd>
             <hr />
         </div>
