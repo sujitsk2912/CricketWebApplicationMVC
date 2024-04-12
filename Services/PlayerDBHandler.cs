@@ -17,8 +17,8 @@ namespace CricketWebApplicationMVC.Models
         {
             Connection();
             con.Open();
-            string encodedImage = Convert.ToBase64String(PList.PlayerImg);
-            string checkQuery = "SELECT COUNT(*) FROM PlayerDetails WHERE PlayerName = @PlayerName";
+/*            string encodedImage = Convert.ToBase64String(PList.PlayerImg);
+*/            string checkQuery = "SELECT COUNT(*) FROM PlayerDetails WHERE PlayerName = @PlayerName";
             SqlCommand checkCmd = new SqlCommand(checkQuery, con);
             checkCmd.Parameters.AddWithValue("@PlayerName", PList.PlayerName);
             int existingCount = (int)checkCmd.ExecuteScalar();
@@ -29,7 +29,7 @@ namespace CricketWebApplicationMVC.Models
                 return false; // Player already exists, return false
             }
 
-            string insertQuery = "INSERT INTO PlayerDetails VALUES (@PlayerName, @Born, @City, @Age, @BattingStyle, @BowlingStyle, @PlayingRole, @Team, @PlayerImg)";
+            string insertQuery = "INSERT INTO PlayerDetails VALUES (@PlayerName, @Born, @City, @Age, @BattingStyle, @BowlingStyle, @PlayingRole, @PlayerImg)";
             SqlCommand insertCmd = new SqlCommand(insertQuery, con);
             insertCmd.Parameters.AddWithValue("@PlayerName", PList.PlayerName);
             insertCmd.Parameters.AddWithValue("@Born", PList.Born);
@@ -38,8 +38,8 @@ namespace CricketWebApplicationMVC.Models
             insertCmd.Parameters.AddWithValue("@BattingStyle", PList.BattingStyle);
             insertCmd.Parameters.AddWithValue("@BowlingStyle", PList.BowlingStyle);
             insertCmd.Parameters.AddWithValue("@PlayingRole", PList.PlayingRole);
-            insertCmd.Parameters.AddWithValue("@Team", PList.Team);
-            insertCmd.Parameters.AddWithValue("@PlayerImg", encodedImage);
+            /* insertCmd.Parameters.AddWithValue("@Team", PList.Team);*/
+            insertCmd.Parameters.AddWithValue("@PlayerImg", /*encodedImage*/ "img");
 
             int res = insertCmd.ExecuteNonQuery();
             con.Close();
@@ -57,7 +57,7 @@ namespace CricketWebApplicationMVC.Models
                 Connection(); // Assuming Connection() method establishes the connection
                 con.Open();
 
-                string query = "SELECT PlayerID, PlayerName, Born, City, Age, BattingStyle, BowlingStyle, PlayingRole, Team, PlayerImg FROM PlayerDetails";  // Specify needed columns
+                string query = "SELECT PlayerID, PlayerName, Born, City, Age, BattingStyle, BowlingStyle, PlayingRole, PlayerImg FROM PlayerDetails";  // Specify needed columns
                 SqlDataAdapter adapter = new SqlDataAdapter(query, con);
                 DataSet ds = new DataSet();
                 adapter.Fill(ds, "PlayerDs");
@@ -72,11 +72,10 @@ namespace CricketWebApplicationMVC.Models
                     string battingStyle = dr["BattingStyle"].ToString();
                     string bowlingStyle = dr["BowlingStyle"].ToString();
                     string playingRole = dr["PlayingRole"].ToString();
-                    string team = dr["Team"].ToString();
+                   /* string team = dr["Team"].ToString();*/
 
-                    // Check if PlayerImg is not null before casting
-                    byte[] playerImgBytes = dr["PlayerImg"] == DBNull.Value ? null : (byte[])dr["PlayerImg"];
-
+/*                    byte[] playerImgBytes = dr["PlayerImg"] == DBNull.Value ? null : (byte[])dr["PlayerImg"];
+*/
                     players.Add(new AddPlayerModel
                     {
                         PlayerID = playerID,
@@ -87,14 +86,13 @@ namespace CricketWebApplicationMVC.Models
                         BattingStyle = battingStyle,
                         BowlingStyle = bowlingStyle,
                         PlayingRole = playingRole,
-                        Team = team,
-                        PlayerImg = playerImgBytes
+                      /*  Team = team,*/
+                       /* PlayerImg = playerImgBytes*/
                     });
                 }
             }
             catch (Exception ex)
             {
-                // Handle exceptions appropriately (e.g., logging, throwing to caller)
                 Console.WriteLine("Error getting player records: " + ex.Message);
             }
             finally
@@ -109,14 +107,14 @@ namespace CricketWebApplicationMVC.Models
         }
 
 
-        public bool UpdateRecord(AddPlayerModel player)  // Use a singular name for consistency
+        public bool UpdateRecord(AddPlayerModel player)
         {
             try
             {
-                Connection(); // Assuming Connection() method establishes the connection
+                Connection();
                 con.Open();
 
-                string query = "UPDATE PlayerDetails SET PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole, Team = @Team";
+                string query = "UPDATE PlayerDetails SET PlayerName = @PlayerName, Born = @Born, City = @City, Age = @Age, BattingStyle = @BattingStyle, BowlingStyle = @BowlingStyle, PlayingRole = @PlayingRole";
 
                 if (player.PlayerImg != null)
                 {
@@ -133,19 +131,17 @@ namespace CricketWebApplicationMVC.Models
                 cmd.Parameters.AddWithValue("@BattingStyle", player.BattingStyle);
                 cmd.Parameters.AddWithValue("@BowlingStyle", player.BowlingStyle);
                 cmd.Parameters.AddWithValue("@PlayingRole", player.PlayingRole);
-                cmd.Parameters.AddWithValue("@Team", player.Team);
+          /*      cmd.Parameters.AddWithValue("@Team", player.Team);*/
                 cmd.Parameters.AddWithValue("@PlayerID", player.PlayerID);
 
                 if (player.PlayerImg != null)
                 {
                     if (player.PlayerImg is byte[])
                     {
-                        // PlayerImg already contains byte array, use it directly
                         cmd.Parameters.AddWithValue("@PlayerImg", player.PlayerImg);
                     }
                     else
                     {
-                        // Handle unexpected PlayerImg type (throw exception or log error)
                         throw new ArgumentException("Invalid PlayerImg type");
                     }
                 }
@@ -155,7 +151,6 @@ namespace CricketWebApplicationMVC.Models
             }
             catch (Exception ex)
             {
-                // Handle exceptions appropriately (e.g., logging, throwing to caller)
                 Console.WriteLine("Error updating player record: " + ex.Message);
                 return false;
             }

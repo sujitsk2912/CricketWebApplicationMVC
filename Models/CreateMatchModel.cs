@@ -10,7 +10,9 @@ namespace CricketWebApplicationMVC.Models
     {
         public int MatchID { get; set; }
         public int TeamA_ID { get; set; }
+        public byte[] TeamA_Logo { get; set; }
         public int TeamB_ID { get; set; }
+        public byte[] TeamB_Logo { get; set; }
         public string Match_DateTime { get; set; }
         public string Venue { get; set; }
         public string MatchType { get; set; }

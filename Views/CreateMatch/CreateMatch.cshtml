@@ -52,7 +52,7 @@
                         }
                     </select>
                     <div class="form-group" style="display:flex; justify-content:center; margin-top:20px">
-                        <img id="TeamA_Logo" class="TeamLogo" src="~/TeamLogo/" />
+                        <img id="TeamA_Logo" class="TeamLogo" src="" />
                     </div>
                 </div>
             </div>
@@ -167,7 +167,38 @@
         const otherMatchType = document.getElementById("OtherMatchType"); // Fixed variable name
         const teamASelect = document.getElementById("TeamA_Name");
         const teamBSelect = document.getElementById("TeamB_Name");
+        const teamALogo = document.getElementById("TeamA_Logo");
+        const teamBLogo = document.getElementById("TeamB_Logo");
         const submitButton = document.querySelector('input[type="submit"]');
+
+        function updateTeamLogo(teamId, imgElement) {
+            // AJAX request to fetch team logo based on team ID
+            fetch(`/CreateMatch/GetTeamLogo?teamId=${teamId}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    // Convert blob to Base64 data URL
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        const base64data = reader.result;
+                        imgElement.src = base64data; // Update img src with logo data
+                    };
+                    reader.readAsDataURL(blob);
+                })
+                .catch(error => console.error('Error fetching team logo:', error));
+        }
+
+        // Event listener for Team A dropdown change
+        teamASelect.addEventListener("change", function () {
+            const selectedTeamId = teamASelect.value;
+            updateTeamLogo(selectedTeamId, teamALogo);
+        });
+
+        // Event listener for Team B dropdown change
+        teamBSelect.addEventListener("change", function () {
+            const selectedTeamId = teamBSelect.value;
+            updateTeamLogo(selectedTeamId, teamBLogo);
+        });
+
 
         matchTypeSelect.addEventListener("change", function () {
             if (matchTypeSelect.value === "other") {

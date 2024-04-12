@@ -4,6 +4,9 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using CricketWebApplicationMVC.Models;
+using CricketWebApplicationMVC.Services;
+using CricketWebApplicationMVC.Services.ServicesImpl;
+using CricketWebApplicationMVC.Dto;
 
 namespace CricketWebApplicationMVC.Controllers
 {
@@ -29,11 +32,11 @@ namespace CricketWebApplicationMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPlayer(AddPlayerModel PList, IFormFile UploadFile)
+        public async Task<IActionResult> AddPlayer(AddPlayerRequestDto PList, IFormFile UploadFile)
         {
             try
             {
-                if (UploadFile != null && UploadFile.Length > 0)
+                /*if (UploadFile != null && UploadFile.Length > 0)
                 {
                     byte[] buffer;
 
@@ -61,7 +64,10 @@ namespace CricketWebApplicationMVC.Controllers
                 else
                 {
                     TempData["AlertMessage"] = "Please select a file.";
-                }
+                }*/
+
+                AddPlayerServiceInterface addPlayerService = new AddPlayerServiceImpl();
+                addPlayerService.AddPlayer(PList);
             }
             catch (Exception ex)
             {
@@ -79,8 +85,9 @@ namespace CricketWebApplicationMVC.Controllers
             return View(player);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(int PlayerId, AddPlayerModel iList, IFormFile UploadFile)
+        /*[HttpPost]
+        public async Task<IActionResult> Edit(int PlayerId, 
+            AddPlayerModel iList, IFormFile UploadFile)
         {
             try
             {
@@ -98,7 +105,7 @@ namespace CricketWebApplicationMVC.Controllers
                 }
 
                 PlayerDBHandler dBHandler = new PlayerDBHandler();
-                if (dBHandler.UpdateRecord(iList))
+                *//*if (dBHandler.UpdateRecord(iList))
                 {
                     TempData["AlertMessage"] = "Record Edited Successfully";
                     ModelState.Clear();
@@ -107,7 +114,7 @@ namespace CricketWebApplicationMVC.Controllers
                 else 
                 {
                     TempData["AlertMessage"] = "This Player Already Exist";
-                }
+                }*//*
             }
             catch (Exception ex)
             {
@@ -115,7 +122,7 @@ namespace CricketWebApplicationMVC.Controllers
             }
 
             return View(iList);
-        }
+        }*/
 
         public IActionResult DetailsByID(int PlayerID)
         {

@@ -10,12 +10,12 @@
     <h4>AddPlayerModel</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+       @*  <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PlayerID)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PlayerID)
-        </dd>
+        </dd> *@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PlayerName)
         </dt>
@@ -34,12 +34,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.City)
         </dd>
-        <dt class = "col-sm-2">
+        @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Age)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Age)
-        </dd>
+        </dd> *@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BattingStyle)
         </dt>
@@ -58,18 +58,18 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PlayingRole)
         </dd>
-        <dt class = "col-sm-2">
+        @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Team)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Team)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd> *@
+       @*  <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PlayerImg)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PlayerImg)
-        </dd>
+        </dd> *@
     </dl>
 
     <form id="deleteForm" asp-action="Delete">

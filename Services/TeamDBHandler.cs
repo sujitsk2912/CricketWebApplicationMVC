@@ -5,8 +5,9 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Imaging;
 using System.Numerics;
+using CricketWebApplicationMVC.Models;
 
-namespace CricketWebApplicationMVC.Models
+namespace CricketWebApplicationMVC.Services
 {
     public class TeamDBHandler
     {
@@ -99,7 +100,7 @@ namespace CricketWebApplicationMVC.Models
             List<AddTeamModel> li = new List<AddTeamModel>();
             Connection();
             con.Open();
-            string Query = "SELECT TeamID, TeamName, TeamLogo, Player1, Player2, Player3, Player4, Player5, Player6, Player7, Player8, Player9, Player10, Player11 FROM AddTeams"; 
+            string Query = "SELECT TeamID, TeamName, TeamLogo, Player1, Player2, Player3, Player4, Player5, Player6, Player7, Player8, Player9, Player10, Player11 FROM AddTeams";
             SqlDataAdapter adapter = new SqlDataAdapter(Query, con);
             DataSet ds = new DataSet();
             adapter.Fill(ds, "TeamsDs");
@@ -153,8 +154,8 @@ namespace CricketWebApplicationMVC.Models
                     BattingStyle = dr["BattingStyle"].ToString(),
                     BowlingStyle = dr["BowlingStyle"].ToString(),
                     PlayingRole = dr["PlayingRole"].ToString(),
-                    Team = dr["Team"].ToString(),
-                    PlayerImg = Convert.FromBase64String(dr["PlayerImg"].ToString())
+                   /* Team = dr["Team"].ToString(),*/
+                    PlayerImg = dr["PlayerImg"].ToString()
                 });
             }
 

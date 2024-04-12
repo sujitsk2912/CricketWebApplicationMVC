@@ -5,6 +5,7 @@ using System.Data;
 using System.Configuration;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using CricketWebApplicationMVC.Services;
 
 namespace CricketWebApplicationMVC.Controllers
 {

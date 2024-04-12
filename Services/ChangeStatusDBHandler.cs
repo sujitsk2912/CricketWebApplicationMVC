@@ -2,9 +2,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using CricketWebApplicationMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CricketWebApplicationMVC.Models
+namespace CricketWebApplicationMVC.Services
 {
     public class ChangeStatusDBHandler
     {

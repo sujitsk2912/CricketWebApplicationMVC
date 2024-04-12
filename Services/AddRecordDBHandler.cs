@@ -1,4 +1,4 @@
-﻿namespace CricketWebApplicationMVC.Models
+﻿namespace CricketWebApplicationMVC.Services
 {
     public class AddRecordDBHandler
     {

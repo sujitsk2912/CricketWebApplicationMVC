@@ -34,7 +34,7 @@
             <th data-field="BattingStyle">Batting Style</th>
             <th data-field="BowlingStyle">Bowling Style</th>
             <th data-field="PlayingRole">Playing Role</th>
-            <th data-field="Team">Team</th>
+            @* <th data-field="Team">Team</th> *@
             <th data-field="PlayerImg">Image</th>
             <th>Action</th>
         </tr>
@@ -51,10 +51,10 @@
                 <td>@item.BattingStyle</td>
                 <td>@item.BowlingStyle</td>
                 <td>@item.PlayingRole</td>
-                <td>@item.Team</td>
+               @*  <td>@item.Team</td> *@
                 <td class="PlayerImg">
-                    <img src="data:image;base64,@(Convert.ToBase64String(item.PlayerImg))" alt="Player Image" style="max-width: 100px; max-height: 100px;" />
-                </td>
+@*                     <img src="data:image;base64,@(Convert.ToBase64String(item.PlayerImg))" alt="Player Image" style="max-width: 100px; max-height: 100px;" />
+ *@                </td>
                 <td>
                     <a href="@Url.Action("Edit", new { PlayerID = item.PlayerID })">Edit</a>
                     <a href="@Url.Action("DetailsByID", new { PlayerID = item.PlayerID })">Details</a>
